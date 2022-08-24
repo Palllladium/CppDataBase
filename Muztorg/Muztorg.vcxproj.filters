@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Menu">
+      <UniqueIdentifier>{4ce121eb-5729-4a90-8a48-d8d85f081c6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other">
+      <UniqueIdentifier>{59c26c6c-bef4-41e8-b976-60232ba27a51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other\hpp">
+      <UniqueIdentifier>{526c3136-f365-4338-b840-13c20efe1008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other\cpp">
+      <UniqueIdentifier>{51f650d3-88c3-4229-a8dd-13192076fa4d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Guitars.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Employees.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Sales.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Supplies.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Buyers.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Func.h">
+      <Filter>Other\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="include.h">
+      <Filter>Other\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="List.hpp">
+      <Filter>Other\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.hpp">
+      <Filter>Other\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Unit.hpp">
+      <Filter>Other\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="SalesEmployee_Report.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="SuppliesEmployee_Report.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="SalesGuitar_Report.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="SuppliesGuitar_Report.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="buttonMenu.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Guitars.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Employees.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Sales.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Supplies.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Buyers.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Func.cpp">
+      <Filter>Other\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Types.cpp">
+      <Filter>Other\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="SalesEmployee_Report.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="SuppliesEmployee_Report.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="SalesGuitar_Report.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="SuppliesGuitar_Report.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="buttonMenu.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="struct_of_supplies.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="supplies.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="sales.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="employees.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="guitars.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="struct_of_sales.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="buyers.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="FUTUREWORK.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
