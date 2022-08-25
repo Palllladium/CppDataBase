@@ -62,7 +62,7 @@ namespace Muztorg {
 
 	private: System::Windows::Forms::TextBox^ NameBox;
 	private: System::Windows::Forms::Label^ label3;
-	private: System::Windows::Forms::TextBox^ BDateBox;
+	private: System::Windows::Forms::TextBox^ BDateMaskedBox;
 	public:
 		void set_BuyerBase(List<Buyer>* value) { this->BuyerBase = value; }
 		void set_EmployeeBase(List<Employee>* value) { this->EmployeeBase = value; }
@@ -97,7 +97,7 @@ namespace Muztorg {
 			this->GenderBox = (gcnew System::Windows::Forms::TextBox());
 			this->NameBox = (gcnew System::Windows::Forms::TextBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
-			this->BDateBox = (gcnew System::Windows::Forms::TextBox());
+			this->BDateMaskedBox = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
 			// 
 			// ToggleChanges
@@ -233,16 +233,16 @@ namespace Muztorg {
 			this->label3->TabIndex = 42;
 			this->label3->Text = L"Дата рождения";
 			// 
-			// BDateBox
+			// BDateMaskedBox
 			// 
-			this->BDateBox->Location = System::Drawing::Point(107, 64);
-			this->BDateBox->Name = L"BDateBox";
-			this->BDateBox->ReadOnly = true;
-			this->BDateBox->Size = System::Drawing::Size(271, 20);
-			this->BDateBox->TabIndex = 41;
-			this->BDateBox->TextChanged += gcnew System::EventHandler(this, &Employees::NameBox_TextChanged);
-			this->BDateBox->Enter += gcnew System::EventHandler(this, &Employees::NameBox_Enter);
-			this->BDateBox->Leave += gcnew System::EventHandler(this, &Employees::NameBox_Leave);
+			this->BDateMaskedBox->Location = System::Drawing::Point(107, 64);
+			this->BDateMaskedBox->Name = L"BDateMaskedBox";
+			this->BDateMaskedBox->ReadOnly = true;
+			this->BDateMaskedBox->Size = System::Drawing::Size(271, 20);
+			this->BDateMaskedBox->TabIndex = 41;
+			this->BDateMaskedBox->TextChanged += gcnew System::EventHandler(this, &Employees::NameBox_TextChanged);
+			this->BDateMaskedBox->Enter += gcnew System::EventHandler(this, &Employees::NameBox_Enter);
+			this->BDateMaskedBox->Leave += gcnew System::EventHandler(this, &Employees::NameBox_Leave);
 			// 
 			// Employees
 			// 
@@ -250,7 +250,7 @@ namespace Muztorg {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(526, 186);
 			this->Controls->Add(this->label3);
-			this->Controls->Add(this->BDateBox);
+			this->Controls->Add(this->BDateMaskedBox);
 			this->Controls->Add(this->ToggleChanges);
 			this->Controls->Add(this->Prev);
 			this->Controls->Add(this->Delete);

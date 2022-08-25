@@ -4,7 +4,7 @@ System::Void Muztorg::Employees::ToggleChanges_Click(System::Object^ sender, Sys
 {
     NameBox->ReadOnly = false;
     GenderBox->ReadOnly = false;
-    BDateBox->ReadOnly = false;
+    BDateMaskedBox->ReadOnly = false;
 
     ToggleChanges->Visible = false;
     ToggleChangesOff->Visible = true;
@@ -19,7 +19,7 @@ System::Void Muztorg::Employees::Employees_Load(System::Object^ sender, System::
 
     NameBox->ReadOnly = true;
     GenderBox->ReadOnly = true;
-    BDateBox->ReadOnly = true;
+    BDateMaskedBox->ReadOnly = true;
     ToggleChanges->Visible = true;
     ToggleChangesOff->Visible = false;
 
@@ -35,7 +35,7 @@ System::Void Muztorg::Employees::Employees_Load(System::Object^ sender, System::
 
     smallString = this->CurrentPtr->getData().get_BDate();
     BigString = Convert_string_to_String(smallString);
-    BDateBox->Text = BigString;
+    BDateMaskedBox->Text = BigString;
 
     return System::Void();
 }
@@ -75,7 +75,7 @@ System::Void Muztorg::Employees::Prev_Click(System::Object^ sender, System::Even
     this->AddMode = false;
     NameBox->ReadOnly = true;
     GenderBox->ReadOnly = true;
-    BDateBox->ReadOnly = true;
+    BDateMaskedBox->ReadOnly = true;
 
     //Блок сохранения данных
     //-----------------------------------------------------------------
@@ -93,7 +93,7 @@ System::Void Muztorg::Employees::Prev_Click(System::Object^ sender, System::Even
             BigString = GenderBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_Gender(smallString);
-            BigString = BDateBox->Text;
+            BigString = BDateMaskedBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_BDate(smallString);
 
@@ -118,7 +118,7 @@ System::Void Muztorg::Employees::Prev_Click(System::Object^ sender, System::Even
 
     smallString = this->CurrentPtr->getData().get_BDate();
     BigString = Convert_string_to_String(smallString);
-    BDateBox->Text = BigString;
+    BDateMaskedBox->Text = BigString;
     //-----------------------------------------------------------------
     return System::Void();
 }
@@ -127,7 +127,7 @@ System::Void Muztorg::Employees::ToggleChangesOff_Click(System::Object^ sender, 
 {
     NameBox->ReadOnly = true;
     GenderBox->ReadOnly = true;
-    BDateBox->ReadOnly = true;
+    BDateMaskedBox->ReadOnly = true;
 
     ToggleChanges->Visible = true;
     ToggleChangesOff->Visible = false;
@@ -142,7 +142,7 @@ System::Void Muztorg::Employees::Next_Click(System::Object^ sender, System::Even
     this->AddMode = false;
     NameBox->ReadOnly = true;
     GenderBox->ReadOnly = true;
-    BDateBox->ReadOnly = true;
+    BDateMaskedBox->ReadOnly = true;
 
     //Блок сохранения данных
     //-----------------------------------------------------------------
@@ -160,7 +160,7 @@ System::Void Muztorg::Employees::Next_Click(System::Object^ sender, System::Even
             BigString = GenderBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_Gender(smallString);
-            BigString = BDateBox->Text;
+            BigString = BDateMaskedBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_BDate(smallString);
 
@@ -185,7 +185,7 @@ System::Void Muztorg::Employees::Next_Click(System::Object^ sender, System::Even
 
     smallString = this->CurrentPtr->getData().get_BDate();
     BigString = Convert_string_to_String(smallString);
-    BDateBox->Text = BigString;
+    BDateMaskedBox->Text = BigString;
     //-----------------------------------------------------------------
     return System::Void();
 }
@@ -211,7 +211,7 @@ System::Void Muztorg::Employees::Save_Click(System::Object^ sender, System::Even
             BigString = GenderBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_Gender(smallString);
-            BigString = BDateBox->Text;
+            BigString = BDateMaskedBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_BDate(smallString);
 
@@ -240,7 +240,7 @@ System::Void Muztorg::Employees::Add_Click(System::Object^ sender, System::Event
             MessageBox::Show("Заполните поле \"Пол\"");
             return System::Void();
         }
-        if (BDateBox->Text == "")
+        if (BDateMaskedBox->Text == "")
         {
             MessageBox::Show("Заполните поле \"Дата рождения\"");
             return System::Void();
@@ -252,7 +252,7 @@ System::Void Muztorg::Employees::Add_Click(System::Object^ sender, System::Event
         BigString = GenderBox->Text;
         Convert_String_to_string(BigString, smallString);
         value.set_Gender(smallString);
-        BigString = BDateBox->Text;
+        BigString = BDateMaskedBox->Text;
         Convert_String_to_string(BigString, smallString);
         value.set_BDate(smallString);
 
@@ -261,7 +261,7 @@ System::Void Muztorg::Employees::Add_Click(System::Object^ sender, System::Event
 
         NameBox->ReadOnly = true;
         GenderBox->ReadOnly = true;
-        BDateBox->ReadOnly = true;
+        BDateMaskedBox->ReadOnly = true;
         this->AddMode = false;
         this->DataChanged = false;
         return System::Void();
@@ -282,7 +282,7 @@ System::Void Muztorg::Employees::Add_Click(System::Object^ sender, System::Event
             BigString = GenderBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_Gender(smallString);
-            BigString = BDateBox->Text;
+            BigString = BDateMaskedBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_BDate(smallString);
 
@@ -293,10 +293,10 @@ System::Void Muztorg::Employees::Add_Click(System::Object^ sender, System::Event
 
     NameBox->Clear();
     GenderBox->Clear();
-    BDateBox->Clear();
+    BDateMaskedBox->Clear();
     NameBox->ReadOnly = false;
     GenderBox->ReadOnly = false;
-    BDateBox->ReadOnly = false;
+    BDateMaskedBox->ReadOnly = false;
     this->AddMode = true;
 
     return System::Void();
@@ -316,7 +316,7 @@ System::Void Muztorg::Employees::Delete_Click(System::Object^ sender, System::Ev
         this->AddMode = false;
         NameBox->ReadOnly = true;
         GenderBox->ReadOnly = true;
-        BDateBox->ReadOnly = true;
+        BDateMaskedBox->ReadOnly = true;
 
         //Вывод данных CurrentPtr
    //-----------------------------------------------------------------
@@ -330,7 +330,7 @@ System::Void Muztorg::Employees::Delete_Click(System::Object^ sender, System::Ev
 
         smallString = this->CurrentPtr->getData().get_BDate();
         BigString = Convert_string_to_String(smallString);
-        BDateBox->Text = BigString;
+        BDateMaskedBox->Text = BigString;
         //-----------------------------------------------------------------
         return System::Void();
     }
@@ -370,7 +370,7 @@ System::Void Muztorg::Employees::Delete_Click(System::Object^ sender, System::Ev
 
     smallString = this->CurrentPtr->getData().get_BDate();
     BigString = Convert_string_to_String(smallString);
-    BDateBox->Text = BigString;
+    BDateMaskedBox->Text = BigString;
     //-----------------------------------------------------------------
     return System::Void();
 }

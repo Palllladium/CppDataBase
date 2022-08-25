@@ -58,7 +58,6 @@ namespace Muztorg {
 	private: System::Windows::Forms::ComboBox^ EmployeeBox;
 
 	private: System::Windows::Forms::MaskedTextBox^ DateMaskedBox;
-	private: System::Windows::Forms::TextBox^ DateBox;
 	private: System::Windows::Forms::TextBox^ SumBox;
 
 	private: System::Windows::Forms::Button^ Delete;
@@ -101,30 +100,33 @@ namespace Muztorg {
 		/// </sumOfSale>
 		void InitializeComponent(void)
 		{
+			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle1 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle2 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle3 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			this->BuyerBox = (gcnew System::Windows::Forms::ComboBox());
 			this->EmployeeBox = (gcnew System::Windows::Forms::ComboBox());
-			this->DateBox = (gcnew System::Windows::Forms::TextBox());
+			this->DateMaskedBox = (gcnew System::Windows::Forms::MaskedTextBox());
 			this->Delete = (gcnew System::Windows::Forms::Button());
 			this->ToggleChangesOff = (gcnew System::Windows::Forms::Button());
-			this->Save = (gcnew System::Windows::Forms::Button());
 			this->ToggleChange = (gcnew System::Windows::Forms::Button());
+			this->Save = (gcnew System::Windows::Forms::Button());
 			this->Add = (gcnew System::Windows::Forms::Button());
 			this->Prev = (gcnew System::Windows::Forms::Button());
 			this->Next = (gcnew System::Windows::Forms::Button());
 			this->Exit = (gcnew System::Windows::Forms::Button());
 			this->Bill = (gcnew System::Windows::Forms::Button());
+			this->SaleGridView = (gcnew System::Windows::Forms::DataGridView());
+			this->SumBox = (gcnew System::Windows::Forms::TextBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->label4 = (gcnew System::Windows::Forms::Label());
-			this->SaleGridView = (gcnew System::Windows::Forms::DataGridView());
 			this->label3 = (gcnew System::Windows::Forms::Label());
-			this->SumBox = (gcnew System::Windows::Forms::TextBox());
-			this->DateMaskedBox = (gcnew System::Windows::Forms::MaskedTextBox());
+			this->label4 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->SaleGridView))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// BuyerBox
 			// 
+			this->BuyerBox->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->BuyerBox->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
 			this->BuyerBox->FormattingEnabled = true;
 			this->BuyerBox->Location = System::Drawing::Point(215, 35);
@@ -137,6 +139,7 @@ namespace Muztorg {
 			// 
 			// EmployeeBox
 			// 
+			this->EmployeeBox->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->EmployeeBox->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
 			this->EmployeeBox->FormattingEnabled = true;
 			this->EmployeeBox->Location = System::Drawing::Point(215, 72);
@@ -147,16 +150,18 @@ namespace Muztorg {
 			this->EmployeeBox->Enter += gcnew System::EventHandler(this, &Sales::Box_Enter);
 			this->EmployeeBox->Leave += gcnew System::EventHandler(this, &Sales::Box_Leave);
 			// 
-			// DateBox
+			// DateMaskedBox
 			// 
-			this->DateBox->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
-			this->DateBox->Location = System::Drawing::Point(215, 110);
-			this->DateBox->Name = L"DateBox";
-			this->DateBox->Size = System::Drawing::Size(323, 23);
-			this->DateBox->TabIndex = 3;
-			this->DateBox->TextChanged += gcnew System::EventHandler(this, &Sales::Box_SelectedIndexChanged);
-			this->DateBox->Enter += gcnew System::EventHandler(this, &Sales::Box_Enter);
-			this->DateBox->Leave += gcnew System::EventHandler(this, &Sales::Box_Leave);
+			this->DateMaskedBox->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
+			this->DateMaskedBox->Location = System::Drawing::Point(215, 110);
+			this->DateMaskedBox->Mask = L"00/00/0000";
+			this->DateMaskedBox->Name = L"DateMaskedBox";
+			this->DateMaskedBox->Size = System::Drawing::Size(323, 23);
+			this->DateMaskedBox->TabIndex = 30;
+			this->DateMaskedBox->ValidatingType = System::DateTime::typeid;
+			this->DateMaskedBox->TextChanged += gcnew System::EventHandler(this, &Sales::Box_SelectedIndexChanged);
+			this->DateMaskedBox->Enter += gcnew System::EventHandler(this, &Sales::Box_Enter);
+			this->DateMaskedBox->Leave += gcnew System::EventHandler(this, &Sales::Box_Leave);
 			// 
 			// Delete
 			// 
@@ -184,19 +189,6 @@ namespace Muztorg {
 			this->ToggleChangesOff->UseVisualStyleBackColor = false;
 			this->ToggleChangesOff->Click += gcnew System::EventHandler(this, &Sales::ToggleChangesOff_Click);
 			// 
-			// Save
-			// 
-			this->Save->BackColor = System::Drawing::Color::MediumSeaGreen;
-			this->Save->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->Save->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
-			this->Save->Location = System::Drawing::Point(672, 25);
-			this->Save->Name = L"Save";
-			this->Save->Size = System::Drawing::Size(107, 35);
-			this->Save->TabIndex = 19;
-			this->Save->Text = L"Сохранить";
-			this->Save->UseVisualStyleBackColor = false;
-			this->Save->Click += gcnew System::EventHandler(this, &Sales::Save_Click);
-			// 
 			// ToggleChange
 			// 
 			this->ToggleChange->BackColor = System::Drawing::Color::DarkCyan;
@@ -209,6 +201,19 @@ namespace Muztorg {
 			this->ToggleChange->Text = L"Разрешить изменения";
 			this->ToggleChange->UseVisualStyleBackColor = false;
 			this->ToggleChange->Click += gcnew System::EventHandler(this, &Sales::ToggleChange_Click);
+			// 
+			// Save
+			// 
+			this->Save->BackColor = System::Drawing::Color::MediumSeaGreen;
+			this->Save->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->Save->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
+			this->Save->Location = System::Drawing::Point(672, 25);
+			this->Save->Name = L"Save";
+			this->Save->Size = System::Drawing::Size(107, 35);
+			this->Save->TabIndex = 19;
+			this->Save->Text = L"Сохранить";
+			this->Save->UseVisualStyleBackColor = false;
+			this->Save->Click += gcnew System::EventHandler(this, &Sales::Save_Click);
 			// 
 			// Add
 			// 
@@ -279,6 +284,56 @@ namespace Muztorg {
 			this->Bill->Text = L"Чек";
 			this->Bill->UseVisualStyleBackColor = false;
 			// 
+			// SaleGridView
+			// 
+			this->SaleGridView->AllowUserToAddRows = true;
+			this->SaleGridView->AllowUserToDeleteRows = false;
+			this->SaleGridView->AllowUserToResizeColumns = false;
+			this->SaleGridView->AllowUserToResizeRows = false;
+			dataGridViewCellStyle1->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
+			dataGridViewCellStyle1->BackColor = System::Drawing::SystemColors::Control;
+			dataGridViewCellStyle1->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
+			dataGridViewCellStyle1->ForeColor = System::Drawing::SystemColors::WindowText;
+			dataGridViewCellStyle1->SelectionBackColor = System::Drawing::SystemColors::Highlight;
+			dataGridViewCellStyle1->SelectionForeColor = System::Drawing::SystemColors::HighlightText;
+			dataGridViewCellStyle1->WrapMode = System::Windows::Forms::DataGridViewTriState::True;
+			this->SaleGridView->ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+			this->SaleGridView->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::DisableResizing;
+			dataGridViewCellStyle2->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
+			dataGridViewCellStyle2->BackColor = System::Drawing::SystemColors::Window;
+			dataGridViewCellStyle2->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
+			dataGridViewCellStyle2->ForeColor = System::Drawing::SystemColors::ControlText;
+			dataGridViewCellStyle2->SelectionBackColor = System::Drawing::SystemColors::Highlight;
+			dataGridViewCellStyle2->SelectionForeColor = System::Drawing::SystemColors::HighlightText;
+			dataGridViewCellStyle2->WrapMode = System::Windows::Forms::DataGridViewTriState::False;
+			this->SaleGridView->DefaultCellStyle = dataGridViewCellStyle2;
+			this->SaleGridView->Location = System::Drawing::Point(66, 157);
+			this->SaleGridView->Name = L"SaleGridView";
+			dataGridViewCellStyle3->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
+			dataGridViewCellStyle3->BackColor = System::Drawing::SystemColors::Control;
+			dataGridViewCellStyle3->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
+			dataGridViewCellStyle3->ForeColor = System::Drawing::SystemColors::WindowText;
+			dataGridViewCellStyle3->SelectionBackColor = System::Drawing::SystemColors::Highlight;
+			dataGridViewCellStyle3->SelectionForeColor = System::Drawing::SystemColors::HighlightText;
+			dataGridViewCellStyle3->WrapMode = System::Windows::Forms::DataGridViewTriState::True;
+			this->SaleGridView->RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+			this->SaleGridView->ScrollBars = System::Windows::Forms::ScrollBars::None;
+			this->SaleGridView->Size = System::Drawing::Size(713, 252);
+			this->SaleGridView->TabIndex = 27;
+			this->SaleGridView->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Sales::SaleGridView_CellContentClick);
+			this->SaleGridView->CellEnter += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Sales::SaleGridView_CellEnter);
+			this->SaleGridView->CellLeave += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Sales::SaleGridView_CellLeave);
+			this->SaleGridView->EditingControlShowing += gcnew System::Windows::Forms::DataGridViewEditingControlShowingEventHandler(this, &Sales::SaleGridView_EditingControlShowing);
+			// 
+			// SumBox
+			// 
+			this->SumBox->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
+			this->SumBox->Location = System::Drawing::Point(261, 433);
+			this->SumBox->Name = L"SumBox";
+			this->SumBox->ReadOnly = true;
+			this->SumBox->Size = System::Drawing::Size(250, 23);
+			this->SumBox->TabIndex = 29;
+			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
@@ -303,27 +358,6 @@ namespace Muztorg {
 			this->label2->TabIndex = 24;
 			this->label2->Text = L"Сотрудник:";
 			// 
-			// label4
-			// 
-			this->label4->AutoSize = true;
-			this->label4->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->label4->ForeColor = System::Drawing::SystemColors::HighlightText;
-			this->label4->Location = System::Drawing::Point(62, 110);
-			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(140, 21);
-			this->label4->TabIndex = 26;
-			this->label4->Text = L"Дата продажи:";
-			// 
-			// SaleGridView
-			// 
-			this->SaleGridView->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->SaleGridView->Location = System::Drawing::Point(66, 157);
-			this->SaleGridView->Name = L"SaleGridView";
-			this->SaleGridView->ReadOnly = true;
-			this->SaleGridView->Size = System::Drawing::Size(713, 252);
-			this->SaleGridView->TabIndex = 27;
-			// 
 			// label3
 			// 
 			this->label3->AutoSize = true;
@@ -336,22 +370,17 @@ namespace Muztorg {
 			this->label3->TabIndex = 28;
 			this->label3->Text = L"Итого по продаже:";
 			// 
-			// SumBox
+			// label4
 			// 
-			this->SumBox->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
-			this->SumBox->Location = System::Drawing::Point(261, 433);
-			this->SumBox->Name = L"SumBox";
-			this->SumBox->Size = System::Drawing::Size(250, 23);
-			this->SumBox->TabIndex = 29;
-			// 
-			// DateMaskedBox
-			// 
-			this->DateMaskedBox->Location = System::Drawing::Point(215, 140);
-			this->DateMaskedBox->Mask = L"00/00/0000";
-			this->DateMaskedBox->Name = L"DateMaskedBox";
-			this->DateMaskedBox->Size = System::Drawing::Size(323, 20);
-			this->DateMaskedBox->TabIndex = 30;
-			this->DateMaskedBox->ValidatingType = System::DateTime::typeid;
+			this->label4->AutoSize = true;
+			this->label4->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label4->ForeColor = System::Drawing::SystemColors::HighlightText;
+			this->label4->Location = System::Drawing::Point(62, 110);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(140, 21);
+			this->label4->TabIndex = 26;
+			this->label4->Text = L"Дата продажи:";
 			// 
 			// Sales
 			// 
@@ -360,7 +389,6 @@ namespace Muztorg {
 			this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)),
 				static_cast<System::Int32>(static_cast<System::Byte>(64)));
 			this->ClientSize = System::Drawing::Size(847, 485);
-			this->Controls->Add(this->DateMaskedBox);
 			this->Controls->Add(this->SumBox);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->SaleGridView);
@@ -376,7 +404,7 @@ namespace Muztorg {
 			this->Controls->Add(this->Prev);
 			this->Controls->Add(this->Next);
 			this->Controls->Add(this->Exit);
-			this->Controls->Add(this->DateBox);
+			this->Controls->Add(this->DateMaskedBox);
 			this->Controls->Add(this->EmployeeBox);
 			this->Controls->Add(this->BuyerBox);
 			this->Name = L"Sales";
@@ -403,5 +431,13 @@ namespace Muztorg {
 	private: System::Void Exit_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void Box_Enter(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void Box_Leave(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void TextBox_Changed(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void SaleGridView_CellEnter(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
+	private: System::Void SaleGridView_CellLeave(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
+	private: System::Void SaleGridView_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
+	private: System::Void SaleGridView_EditingControlShowing(System::Object^ sender, System::Windows::Forms::DataGridViewEditingControlShowingEventArgs^ e) {
+		if (this->SaleGridView->CurrentCell->ColumnIndex == 0)
+			e->Control->TextChanged += gcnew System::EventHandler(this, &Sales::TextBox_Changed);
+	}
 };
 }
