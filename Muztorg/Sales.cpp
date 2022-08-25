@@ -8,7 +8,6 @@ System::Void Muztorg::Sales::Sales_Load(System::Object^ sender, System::EventArg
     BuyerBox->Enabled = false;
     EmployeeBox->Enabled = false;
     DateBox->ReadOnly = true;
-    SumBox->ReadOnly = true;
     ToggleChange->Visible = true;
     ToggleChangesOff->Visible = false;
 
@@ -26,18 +25,13 @@ System::Void Muztorg::Sales::Sales_Load(System::Object^ sender, System::EventArg
         ePtr = ePtr->getNext();
     }
 
-    DataGridViewComboBoxColumn^ Title = gcnew DataGridViewComboBoxColumn();
+    DataGridViewColumn^ Title = gcnew DataGridViewColumn();
     Title->HeaderText = "Товар";
     Title->ReadOnly = true;
     Title->Width = 200;
     Title->Name = "Title";
+    Title->CellTemplate = gcnew DataGridViewTextBoxCell();
 
-    Unit<Guitar>* gPtr = this->GuitarBase->getHead();
-    while (gPtr != NULL)
-    {
-        Title->Items->Add(Convert_string_to_String(gPtr->getData().get_Title()));
-        gPtr = gPtr->getNext();
-    }
 
     DataGridViewColumn^ Price = gcnew DataGridViewColumn();
     Price->HeaderText = "Цена";
@@ -127,25 +121,6 @@ System::Void Muztorg::Sales::Box_Leave(System::Object^ sender, System::EventArgs
     return System::Void();
 }
 
-System::Void Muztorg::Sales::SaleGridView_CellEnter(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e)
-{
-    this->BoxActive = true;
-    return System::Void();
-}
-
-System::Void Muztorg::Sales::SaleGridView_CellLeave(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e)
-{
-    this->BoxActive = false;
-    return System::Void();
-}
-
-System::Void Muztorg::Sales::SaleGridView_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
-
-    if (BoxActive)
-        DataChanged = true;
-    return System::Void();
-}
-
 System::Void Muztorg::Sales::Prev_Click(System::Object^ sender, System::EventArgs^ e)
 {
 
@@ -153,8 +128,6 @@ System::Void Muztorg::Sales::Prev_Click(System::Object^ sender, System::EventArg
     BuyerBox->Enabled = false;
     EmployeeBox->Enabled = false;
     DateBox->ReadOnly = true;
-    SumBox->ReadOnly = true;
-    SaleGridView->ReadOnly = true;
     ToggleChange->Visible = true;
     ToggleChangesOff->Visible = false;
 
@@ -167,10 +140,6 @@ System::Void Muztorg::Sales::Prev_Click(System::Object^ sender, System::EventArg
             Sale sValue;
             String^ BigString;
             string smallString;
-            StructOfSale strValue;
-            Unit<StructOfSale>* tmpSumUnit;
-            List<Unit<StructOfSale>*>* tmpSumList;
-            Unit<Unit<StructOfSale>*>* strPtr;
 
             this->DataChanged = false;
             sValue.set_ID(this->CurrentPtr->getData().get_ID());
@@ -188,31 +157,10 @@ System::Void Muztorg::Sales::Prev_Click(System::Object^ sender, System::EventArg
             sValue.set_Date(smallString);
 
             this->CurrentPtr->setData(sValue);
-
-            if (this->CurrentStrPtr->getHead() != NULL) {
-                strPtr = this->CurrentStrPtr->getHead();
-                auto counter = 0;
-                while (strPtr != NULL) {
-
-                    strValue.set_SalePtr(CurrentPtr);
-
-                    BigString = SaleGridView["Title", counter]->Value->ToString();
-                    Convert_String_to_string(BigString, smallString);
-                    strValue.set_GuitarPtr(GuitarBase->_search_Title(smallString));
-
-                    BigString = SaleGridView["Amount", counter]->Value->ToString();
-                    Convert_String_to_string(BigString, smallString);
-                    strValue.set_Amount(smallString);
-                    
-                    tmpSumUnit->setData(strValue);
-                    tmpSumList->push_back(tmpSumUnit);
-                    counter++;
-                }
-            }
-
-            this->CurrentStrPtr = tmpSumList;
             MessageBox::Show("Для изменения состава данной продажи необходимо перейти в соответствующую форму.", "Изменения в базе");
         }
+
+        else this->DataChanged = false;
     }
 
     if (this->CurrentPtr->getPrev() == NULL)
@@ -229,7 +177,6 @@ System::Void Muztorg::Sales::Prev_Click(System::Object^ sender, System::EventArg
         getData().get_EmployeePtr()->getData().get_FullName());
 
     DateBox->Text = Convert_string_to_String(this->CurrentPtr->getData().get_Date());
-
     SaleGridView->Rows->Clear();
 
     this->CurrentStrPtr = this->StructOfSaleBase->_search_Sale(this->CurrentPtr->getData().get_ID());
@@ -264,8 +211,6 @@ System::Void Muztorg::Sales::Next_Click(System::Object^ sender, System::EventArg
     BuyerBox->Enabled = false;
     EmployeeBox->Enabled = false;
     DateBox->ReadOnly = true;
-    SumBox->ReadOnly = true;
-    SaleGridView->ReadOnly = true;
     ToggleChange->Visible = true;
     ToggleChangesOff->Visible = false;
 
@@ -278,10 +223,6 @@ System::Void Muztorg::Sales::Next_Click(System::Object^ sender, System::EventArg
             Sale sValue;
             String^ BigString;
             string smallString;
-            StructOfSale strValue;
-            Unit<StructOfSale>* tmpSumUnit;
-            List<Unit<StructOfSale>*>* tmpSumList;
-            Unit<Unit<StructOfSale>*>* strPtr;
 
             this->DataChanged = false;
             sValue.set_ID(this->CurrentPtr->getData().get_ID());
@@ -299,36 +240,221 @@ System::Void Muztorg::Sales::Next_Click(System::Object^ sender, System::EventArg
             sValue.set_Date(smallString);
 
             this->CurrentPtr->setData(sValue);
-
-            if (this->CurrentStrPtr->getHead() != NULL) {
-                strPtr = this->CurrentStrPtr->getHead();
-                auto counter = 0;
-                while (strPtr != NULL) {
-
-                    strValue.set_SalePtr(CurrentPtr);
-
-                    BigString = SaleGridView["Title", counter]->Value->ToString();
-                    Convert_String_to_string(BigString, smallString);
-                    strValue.set_GuitarPtr(GuitarBase->_search_Title(smallString));
-
-                    BigString = SaleGridView["Amount", counter]->Value->ToString();
-                    Convert_String_to_string(BigString, smallString);
-                    strValue.set_Amount(smallString);
-
-                    tmpSumUnit->setData(strValue);
-                    tmpSumList->push_back(tmpSumUnit);
-                    counter++;
-                }
-            }
-
-            this->CurrentStrPtr = tmpSumList;
             MessageBox::Show("Для изменения состава данной продажи необходимо перейти в соответствующую форму.", "Изменения в базе");
+        }
+
+        else this->DataChanged = false;
+    }
+
+    if (this->CurrentPtr->getNext() == NULL)
+        this->CurrentPtr = SaleBase->getHead();
+    else this->CurrentPtr = this->CurrentPtr->getNext();
+
+    String^ tmpSum;
+    auto sumOfSale = 0.0;
+
+    BuyerBox->Text = Convert_string_to_String(this->CurrentPtr->
+        getData().get_BuyerPtr()->getData().get_FullName());
+
+    EmployeeBox->Text = Convert_string_to_String(this->CurrentPtr->
+        getData().get_EmployeePtr()->getData().get_FullName());
+
+    DateBox->Text = Convert_string_to_String(this->CurrentPtr->getData().get_Date());
+    SaleGridView->Rows->Clear();
+
+    this->CurrentStrPtr = this->StructOfSaleBase->_search_Sale(this->CurrentPtr->getData().get_ID());
+    if (this->CurrentStrPtr->getHead() != NULL) {
+        Unit<Unit<StructOfSale>*>* strPtr = this->CurrentStrPtr->getHead();
+        String^ title;
+        String^ price;
+        String^ amount;
+        String^ summary;
+        while (strPtr != NULL) {
+            title = Convert_string_to_String(strPtr->getData()->getData().get_GuitarPtr()->getData().get_Title());
+            price = Convert_string_to_String(strPtr->getData()->getData().get_GuitarPtr()->getData().get_Price());
+            amount = Convert_string_to_String(strPtr->getData()->getData().get_Amount());
+            summary = (Convert::ToDouble(price) * Convert::ToDouble(amount)).ToString();
+            sumOfSale += Convert::ToDouble(summary);
+            SaleGridView->Rows->Add(title, price = String::Format("{0} $", price),
+                amount, summary = String::Format("{0} $", summary));
+            strPtr = strPtr->getNext();
         }
     }
 
-    if (this->CurrentPtr->getPrev() == NULL)
-        this->CurrentPtr = SaleBase->getTail();
-    else this->CurrentPtr = this->CurrentPtr->getPrev();
+    tmpSum = sumOfSale.ToString();
+    tmpSum = String::Format("{0} $", tmpSum);
+    SumBox->Text = tmpSum;
+    return System::Void();
+}
+
+System::Void Muztorg::Sales::Add_Click(System::Object^ sender, System::EventArgs^ e)
+{
+    String^ BigString;
+    string smallString;
+    Sale sValue;
+
+    if (this->AddMode == true)
+    {
+        if (BuyerBox->SelectedIndex == -1)
+        {
+            MessageBox::Show("Заполните поле \"Покупатель\"");
+            return System::Void();
+        }
+        if (EmployeeBox->SelectedIndex == -1)
+        {
+            MessageBox::Show("Заполните поле \"Сотрудник\"");
+            return System::Void();
+        }
+        if (DateBox->Text == "")
+        {
+            MessageBox::Show("Заполните поле \"Дата продажи\"");
+            return System::Void();
+        }
+
+        BigString = BuyerBox->Text;
+        Convert_String_to_string(BigString, smallString);
+        sValue.set_BuyerPtr(BuyerBase->_search_FullName(smallString));
+
+        BigString = EmployeeBox->Text;
+        Convert_String_to_string(BigString, smallString);
+        sValue.set_EmployeePtr(EmployeeBase->_search_FullName(smallString));
+
+        BigString = DateBox->Text;
+        Convert_String_to_string(BigString, smallString);
+        sValue.set_Date(smallString);
+
+        sValue.set_ID(SaleBase->getTail()->getData().get_ID() + 1);
+        SaleBase->push_back(sValue);
+
+        MessageBox::Show("Для изменения состава данной продажи необходимо перейти в соответствующую форму.", "Изменения в базе");
+
+        BuyerBox->Enabled = false;
+        EmployeeBox->Enabled = false;
+        DateBox->ReadOnly = true;
+        ToggleChange->Visible = true;
+        ToggleChangesOff->Visible = false;
+        this->AddMode = false;
+        this->DataChanged = false;
+        return System::Void();
+    }
+
+    if (this->DataChanged == true)
+    {
+
+        if (MessageBox::Show("Сохранить внесенные изменения?", "Несохраненные изменения", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
+            ::System::Windows::Forms::DialogResult::Yes)
+        {
+            this->DataChanged = false;
+            sValue.set_ID(this->CurrentPtr->getData().get_ID());
+
+            BigString = BuyerBox->Text;
+            Convert_String_to_string(BigString, smallString);
+            sValue.set_BuyerPtr(BuyerBase->_search_FullName(smallString));
+
+            BigString = EmployeeBox->Text;
+            Convert_String_to_string(BigString, smallString);
+            sValue.set_EmployeePtr(EmployeeBase->_search_FullName(smallString));
+
+            BigString = DateBox->Text;
+            Convert_String_to_string(BigString, smallString);
+            sValue.set_Date(smallString);
+
+            this->CurrentPtr->setData(sValue);
+            MessageBox::Show("Для изменения состава данной продажи необходимо перейти в соответствующую форму.", "Изменения в базе");
+        }
+
+        else this->DataChanged = false;
+    }
+
+    DateBox->Clear();
+    SumBox->Clear();
+    SaleGridView->Rows->Clear();
+    BuyerBox->SelectedIndex = -1;
+    EmployeeBox->SelectedIndex = -1;
+    BuyerBox->Enabled = true;
+    EmployeeBox->Enabled = true;
+    DateBox->ReadOnly = false;
+    ToggleChange->Visible = false;
+    ToggleChangesOff->Visible = true;
+    this->AddMode = true;
+    return System::Void();
+}
+
+System::Void Muztorg::Sales::Delete_Click(System::Object^ sender, System::EventArgs^ e)
+{
+    int eraseFlag;
+    string errorMessage;
+    Unit<Sale>* erasePtr;
+
+    if (this->AddMode == true)
+    {
+        this->AddMode = false;
+        BuyerBox->Enabled = false;
+        EmployeeBox->Enabled = false;
+        DateBox->ReadOnly = true;
+        ToggleChange->Visible = true;
+        ToggleChangesOff->Visible = false;
+
+        String^ tmpSum;
+        auto sumOfSale = 0.0;
+
+        BuyerBox->Text = Convert_string_to_String(this->CurrentPtr->
+            getData().get_BuyerPtr()->getData().get_FullName());
+
+        EmployeeBox->Text = Convert_string_to_String(this->CurrentPtr->
+            getData().get_EmployeePtr()->getData().get_FullName());
+
+        DateBox->Text = Convert_string_to_String(this->CurrentPtr->getData().get_Date());
+
+        SaleGridView->Rows->Clear();
+
+        this->CurrentStrPtr = this->StructOfSaleBase->_search_Sale(this->CurrentPtr->getData().get_ID());
+        if (this->CurrentStrPtr->getHead() != NULL) {
+            Unit<Unit<StructOfSale>*>* strPtr = this->CurrentStrPtr->getHead();
+            String^ title;
+            String^ price;
+            String^ amount;
+            String^ summary;
+            while (strPtr != NULL) {
+                title = Convert_string_to_String(strPtr->getData()->getData().get_GuitarPtr()->getData().get_Title());
+                price = Convert_string_to_String(strPtr->getData()->getData().get_GuitarPtr()->getData().get_Price());
+                amount = Convert_string_to_String(strPtr->getData()->getData().get_Amount());
+                summary = (Convert::ToDouble(price) * Convert::ToDouble(amount)).ToString();
+                sumOfSale += Convert::ToDouble(summary);
+                SaleGridView->Rows->Add(title, price = String::Format("{0} $", price),
+                    amount, summary = String::Format("{0} $", summary));
+                strPtr = strPtr->getNext();
+            }
+        }
+
+        tmpSum = sumOfSale.ToString();
+        tmpSum = String::Format("{0} $", tmpSum);
+        SumBox->Text = tmpSum;
+        return System::Void();
+    }
+
+    if (MessageBox::Show("Вы уверенны что хотите удалить эту запить? Отменить это действие будет невозможно.", "Подтверждение удаления", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
+        ::System::Windows::Forms::DialogResult::No)
+        return System::Void();
+
+    erasePtr = this->CurrentPtr;
+
+    if (this->CurrentPtr->getNext() == NULL)
+        this->CurrentPtr = SaleBase->getHead();
+    else this->CurrentPtr = this->CurrentPtr->getNext();
+
+    eraseFlag = SaleBase->erase(erasePtr);
+
+    if (eraseFlag == 500) {
+        MessageBox::Show("500");
+        this->CurrentPtr = erasePtr;
+        return System::Void();
+    }
+    if (eraseFlag == 404) {
+        MessageBox::Show("404");
+        this->CurrentPtr = erasePtr;
+        return System::Void();
+    }
 
     String^ tmpSum;
     auto sumOfSale = 0.0;
@@ -368,297 +494,11 @@ System::Void Muztorg::Sales::Next_Click(System::Object^ sender, System::EventArg
     return System::Void();
 }
 
-System::Void Muztorg::Sales::Add_Click(System::Object^ sender, System::EventArgs^ e)
-{
-    Unit<Unit<StructOfSale>*>* strPtr;
-    String^ BigString;
-    string smallString;
-    Sale sValue;
-
-    if (this->AddMode == true)
-    {
-        if (BuyerBox->SelectedIndex == -1)
-        {
-            MessageBox::Show("Заполните поле \"Покупатель\"");
-            return System::Void();
-        }
-        if (EmployeeBox->SelectedIndex == -1)
-        {
-            MessageBox::Show("Заполните поле \"Сотрудник\"");
-            return System::Void();
-        }
-        if (DateBox->Text == "")
-        {
-            MessageBox::Show("Заполните поле \"Дата продажи\"");
-            return System::Void();
-        }
-
-        BigString = BuyerBox->Text;
-        Convert_String_to_string(BigString, smallString);
-        sValue.set_BuyerPtr(BuyerBase->
-            _search_FullName(smallString));
-
-        BigString = EmployeeBox->Text;
-        Convert_String_to_string(BigString, smallString);
-        sValue.set_EmployeePtr(EmployeeBase->
-            _search_FullName(smallString));
-
-        BigString = DateBox->Text;
-        Convert_String_to_string(BigString, smallString);
-        sValue.set_Date(smallString);
-
-        sValue.set_ID(SaleBase->getTail()->getData().get_ID() + 1);
-        SaleBase->push_back(sValue);
-
-        MessageBox::Show("Для изменения состава данной продажи необходимо перейти в соответствующую форму.", "Изменения в базе");
-
-        BuyerBox->Enabled = false;
-        EmployeeBox->Enabled = false;
-        DateBox->ReadOnly = true;
-        SumBox->ReadOnly = true;
-        SaleGridView->ReadOnly = true;
-        ToggleChange->Visible = true;
-        ToggleChangesOff->Visible = false;
-        this->AddMode = false;
-        this->DataChanged = false;
-        return System::Void();
-    }
-
-    if (this->DataChanged == true)
-    {
-        Sale sValue;
-        StructOfSale strValue;
-        Unit<StructOfSale>* tmpSumUnit;
-        List<Unit<StructOfSale>*>* tmpSumList;
-
-        if (MessageBox::Show("Сохранить внесенные изменения?", "Несохраненные изменения", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
-            ::System::Windows::Forms::DialogResult::Yes)
-        {
-            this->DataChanged = false;
-            sValue.set_ID(this->CurrentPtr->getData().get_ID());
-
-            BigString = BuyerBox->Text;
-            Convert_String_to_string(BigString, smallString);
-            sValue.set_BuyerPtr(BuyerBase->
-                _search_FullName(smallString));
-
-            BigString = EmployeeBox->Text;
-            Convert_String_to_string(BigString, smallString);
-            sValue.set_EmployeePtr(EmployeeBase->
-                _search_FullName(smallString));
-
-            BigString = DateBox->Text;
-            Convert_String_to_string(BigString, smallString);
-            sValue.set_Date(smallString);
-
-            this->CurrentPtr->setData(sValue);
-            if (this->CurrentStrPtr->getHead() != NULL) {
-                strPtr = this->CurrentStrPtr->getHead();
-                auto counter = 0;
-                while (strPtr != NULL) {
-
-                    strValue.set_SalePtr(CurrentPtr);
-
-                    BigString = SaleGridView["Title", counter]->Value->ToString();
-                    Convert_String_to_string(BigString, smallString);
-                    strValue.set_GuitarPtr(GuitarBase->
-                        _search_Title(smallString));
-
-                    BigString = SaleGridView["Amount", counter]->Value->ToString();
-                    Convert_String_to_string(BigString, smallString);
-                    strValue.set_Amount(smallString);
-
-                    tmpSumUnit->setData(strValue);
-                    tmpSumList->push_back(tmpSumUnit);
-                    counter++;
-                }
-            }
-
-            this->CurrentStrPtr = tmpSumList;
-            MessageBox::Show("Для изменения состава данной продажи необходимо перейти в соответствующую форму.", "Изменения в базе");
-        }
-    }
-
-    DateBox->Clear();
-    SumBox->Clear();
-    SaleGridView->Rows->Clear();
-    BuyerBox->SelectedIndex = -1;
-    EmployeeBox->SelectedIndex = -1;
-    BuyerBox->Enabled = true;
-    EmployeeBox->Enabled = true;
-    DateBox->ReadOnly = false;
-    SumBox->ReadOnly = true;
-    SaleGridView->ReadOnly = false;
-    SaleGridView->Columns["Price"]->ReadOnly = true;
-    SaleGridView->Columns["Sum"]->ReadOnly = true;
-    ToggleChange->Visible = false;
-    ToggleChangesOff->Visible = true;
-    this->AddMode = true;
-    return System::Void();
-}
-
-System::Void Muztorg::Sales::Delete_Click(System::Object^ sender, System::EventArgs^ e)
-{
-    int eraseFlag;
-    string errorMessage;
-    String^ BigString;
-    string smallString;
-
-    Unit<Sale>* erasePtr;
-
-    if (this->AddMode == true)
-    {
-        this->AddMode = false;
-        BuyerBox->Enabled = false;
-        EmployeeBox->Enabled = false;
-        DateBox->ReadOnly = true;
-        SumBox->ReadOnly = true;
-        SaleGridView->ReadOnly = true;
-        ToggleChange->Visible = true;
-        ToggleChangesOff->Visible = false;
-
-        Unit<Unit<StructOfSale>*>* strPtr;
-        String^ title;
-        String^ price;
-        String^ amount;
-        String^ summary;
-        String^ tmpSum;
-        auto sumOfGuitars = 0.0;
-        auto sumOfSale = 0.0;
-
-        smallString = this->CurrentPtr->
-            getData().get_BuyerPtr()->getData().get_FullName();
-        BigString = Convert_string_to_String(smallString);
-        BuyerBox->Text = BigString;
-
-        smallString = this->CurrentPtr->
-            getData().get_EmployeePtr()->getData().get_FullName();
-        BigString = Convert_string_to_String(smallString);
-        EmployeeBox->Text = BigString;
-
-        smallString = this->CurrentPtr->getData().get_Date();
-        BigString = Convert_string_to_String(smallString);
-        DateBox->Text = BigString;
-
-        SaleGridView->Rows->Clear();
-
-        this->CurrentStrPtr = this->StructOfSaleBase->
-        _search_Sale(this->CurrentPtr->getData().get_ID());
-        if (this->CurrentStrPtr->getHead() != NULL) {
-            strPtr = this->CurrentStrPtr->getHead();
-            auto counter = 0;
-            while (strPtr != NULL) {
-                smallString = strPtr->getData()->
-                    getData().get_GuitarPtr()->getData().get_Title();
-                title = Convert_string_to_String(smallString);
-                smallString = strPtr->getData()->
-                    getData().get_GuitarPtr()->getData().get_Price();
-                price = Convert_string_to_String(smallString);
-                smallString = strPtr->getData()->getData().get_Amount();
-                amount = Convert_string_to_String(smallString);
-                summary = (Convert::ToDouble(price) * Convert::ToDouble(amount)).ToString();
-                sumOfSale += Convert::ToDouble(summary);
-                SaleGridView->Rows->Add(title, price = String::Format("{0} $", price),
-                    amount, summary = String::Format("{0} $", summary));
-                strPtr = strPtr->getNext();
-                counter++;
-            }
-        }
-
-        tmpSum = sumOfSale.ToString();
-        tmpSum = String::Format("{0} $", tmpSum);
-        SumBox->Text = tmpSum;
-        return System::Void();
-    }
-
-    if (MessageBox::Show("Вы уверенны что хотите удалить эту запить? Отменить это действие будет невозможно.", "Подтверждение удаления", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
-        ::System::Windows::Forms::DialogResult::No)
-        return System::Void();
-
-    erasePtr = this->CurrentPtr;
-
-    if (this->CurrentPtr->getNext() == NULL)
-        this->CurrentPtr = SaleBase->getHead();
-    else this->CurrentPtr = this->CurrentPtr->getNext();
-
-    eraseFlag = SaleBase->erase(erasePtr);
-
-    if (eraseFlag == 500) {
-        MessageBox::Show("500");
-        this->CurrentPtr = erasePtr;
-        return System::Void();
-    }
-    if (eraseFlag == 404) {
-        MessageBox::Show("404");
-        this->CurrentPtr = erasePtr;
-        return System::Void();
-    }
-
-    // удалять StructOfSale через цикл, хранить StructOfSale в ptr, где стракты отобраны по SaleID
-
-    Unit<Unit<StructOfSale>*>* strPtr;
-    String^ title;
-    String^ price;
-    String^ amount;
-    String^ summary;
-    String^ tmpSum;
-    auto sumOfGuitars = 0.0;
-    auto sumOfSale = 0.0;
-
-    smallString = this->CurrentPtr->
-        getData().get_BuyerPtr()->getData().get_FullName();
-    BigString = Convert_string_to_String(smallString);
-    BuyerBox->Text = BigString;
-
-    smallString = this->CurrentPtr->
-        getData().get_EmployeePtr()->getData().get_FullName();
-    BigString = Convert_string_to_String(smallString);
-    EmployeeBox->Text = BigString;
-
-    smallString = this->CurrentPtr->getData().get_Date();
-    BigString = Convert_string_to_String(smallString);
-    DateBox->Text = BigString;
-
-    SaleGridView->Rows->Clear();
-
-    this->CurrentStrPtr = this->StructOfSaleBase->
-        _search_Sale(this->CurrentPtr->getData().get_ID());
-    if (this->CurrentStrPtr->getHead() != NULL) {
-        strPtr = this->CurrentStrPtr->getHead();
-        auto counter = 1;
-        while (strPtr != NULL) {
-            smallString = strPtr->getData()->
-                getData().get_GuitarPtr()->getData().get_Title();
-            title = Convert_string_to_String(smallString);
-            smallString = strPtr->getData()->
-                getData().get_GuitarPtr()->getData().get_Price();
-            price = Convert_string_to_String(smallString);
-            smallString = strPtr->getData()->getData().get_Amount();
-            amount = Convert_string_to_String(smallString);
-            summary = (Convert::ToDouble(price) * Convert::ToDouble(amount)).ToString();
-            sumOfSale += Convert::ToDouble(summary);
-            SaleGridView->Rows->Add(title, price = String::Format("{0} $", price),
-                amount, summary = String::Format("{0} $", summary));
-            strPtr = strPtr->getNext();
-            counter++;
-        }
-    }
-
-    tmpSum = sumOfSale.ToString();
-    tmpSum = String::Format("{0} $", tmpSum);
-    SumBox->Text = tmpSum;
-    return System::Void();
-}
-
 System::Void Muztorg::Sales::ToggleChange_Click(System::Object^ sender, System::EventArgs^ e)
 {
     BuyerBox->Enabled = true;
     EmployeeBox->Enabled = true;
     DateBox->ReadOnly = false;
-    SumBox->ReadOnly = true;
-    SaleGridView->ReadOnly = false;
-    SaleGridView->Columns["Price"]->ReadOnly = true;
-    SaleGridView->Columns["Sum"]->ReadOnly = true;
     ToggleChange->Visible = false;
     ToggleChangesOff->Visible = true;
     return System::Void();
@@ -666,65 +506,41 @@ System::Void Muztorg::Sales::ToggleChange_Click(System::Object^ sender, System::
 
 System::Void Muztorg::Sales::Save_Click(System::Object^ sender, System::EventArgs^ e)
 {
-    Unit<Unit<StructOfSale>*>* strPtr;
     String^ BigString;
     string smallString;
-    Sale sValue;
 
     if (this->DataChanged == true)
     {
 
         Sale sValue;
-        StructOfSale strValue;
-        Unit<StructOfSale>* tmpSumUnit;
-        List<Unit<StructOfSale>*>* tmpSumList;
 
         if (MessageBox::Show("Сохранить внесенные изменения?", "Несохраненные изменения", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
             ::System::Windows::Forms::DialogResult::Yes)
         {
+            Sale sValue;
+            String^ BigString;
+            string smallString;
+
             this->DataChanged = false;
             sValue.set_ID(this->CurrentPtr->getData().get_ID());
 
             BigString = BuyerBox->Text;
             Convert_String_to_string(BigString, smallString);
-            sValue.set_BuyerPtr(BuyerBase->
-                _search_FullName(smallString));
+            sValue.set_BuyerPtr(BuyerBase->_search_FullName(smallString));
 
             BigString = EmployeeBox->Text;
             Convert_String_to_string(BigString, smallString);
-            sValue.set_EmployeePtr(EmployeeBase->
-                _search_FullName(smallString));
+            sValue.set_EmployeePtr(EmployeeBase->_search_FullName(smallString));
 
             BigString = DateBox->Text;
             Convert_String_to_string(BigString, smallString);
             sValue.set_Date(smallString);
 
             this->CurrentPtr->setData(sValue);
-            if (this->CurrentStrPtr->getHead() != NULL) {
-                strPtr = this->CurrentStrPtr->getHead();
-                auto counter = 0;
-                while (strPtr != NULL) {
-
-                    strValue.set_SalePtr(CurrentPtr);
-
-                    BigString = SaleGridView["Title", counter]->Value->ToString();
-                    Convert_String_to_string(BigString, smallString);
-                    strValue.set_GuitarPtr(GuitarBase->
-                        _search_Title(smallString));
-
-                    BigString = SaleGridView["Amount", counter]->Value->ToString();
-                    Convert_String_to_string(BigString, smallString);
-                    strValue.set_Amount(smallString);
-
-                    tmpSumUnit->setData(strValue);
-                    tmpSumList->push_back(tmpSumUnit);
-                    counter++;
-                }
-            }
-
-            this->CurrentStrPtr = tmpSumList;
-            //MessageBox::Show("Для изменения состава данной продажи необходимо перейти в соответствующую форму.", "Изменения в базе");
+            MessageBox::Show("Для изменения состава данной продажи необходимо перейти в соответствующую форму.", "Изменения в базе");
         }
+
+        else this->DataChanged = false;
     }
 
     return System::Void();
@@ -761,8 +577,6 @@ System::Void Muztorg::Sales::ToggleChangesOff_Click(System::Object^ sender, Syst
     BuyerBox->Enabled = false;
     EmployeeBox->Enabled = false;
     DateBox->ReadOnly = true;
-    SumBox->ReadOnly = true;
-    SaleGridView->ReadOnly = true;
     ToggleChange->Visible = true;
     ToggleChangesOff->Visible = false;
     return System::Void();

@@ -57,6 +57,7 @@ namespace Muztorg {
 	private: System::Windows::Forms::ComboBox^ BuyerBox;
 	private: System::Windows::Forms::ComboBox^ EmployeeBox;
 
+	private: System::Windows::Forms::MaskedTextBox^ DateMaskedBox;
 	private: System::Windows::Forms::TextBox^ DateBox;
 	private: System::Windows::Forms::TextBox^ SumBox;
 
@@ -118,6 +119,7 @@ namespace Muztorg {
 			this->SaleGridView = (gcnew System::Windows::Forms::DataGridView());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->SumBox = (gcnew System::Windows::Forms::TextBox());
+			this->DateMaskedBox = (gcnew System::Windows::Forms::MaskedTextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->SaleGridView))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -233,6 +235,7 @@ namespace Muztorg {
 			this->Prev->TabIndex = 16;
 			this->Prev->Text = L"PREV";
 			this->Prev->UseVisualStyleBackColor = false;
+			this->Prev->DoubleClick += gcnew System::EventHandler(this, &Sales::Prev_Click);
 			this->Prev->Click += gcnew System::EventHandler(this, &Sales::Prev_Click);
 			// 
 			// Next
@@ -246,6 +249,7 @@ namespace Muztorg {
 			this->Next->TabIndex = 15;
 			this->Next->Text = L"NEXT";
 			this->Next->UseVisualStyleBackColor = false;
+			this->Next->DoubleClick += gcnew System::EventHandler(this, &Sales::Next_Click);
 			this->Next->Click += gcnew System::EventHandler(this, &Sales::Next_Click);
 			// 
 			// Exit
@@ -316,11 +320,9 @@ namespace Muztorg {
 			this->SaleGridView->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->SaleGridView->Location = System::Drawing::Point(66, 157);
 			this->SaleGridView->Name = L"SaleGridView";
+			this->SaleGridView->ReadOnly = true;
 			this->SaleGridView->Size = System::Drawing::Size(713, 252);
 			this->SaleGridView->TabIndex = 27;
-			this->SaleGridView->CellValueChanged += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Sales::SaleGridView_CellContentClick);
-			this->SaleGridView->RowEnter += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Sales::SaleGridView_CellEnter);
-			this->SaleGridView->RowLeave += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Sales::SaleGridView_CellLeave);
 			// 
 			// label3
 			// 
@@ -342,6 +344,15 @@ namespace Muztorg {
 			this->SumBox->Size = System::Drawing::Size(250, 23);
 			this->SumBox->TabIndex = 29;
 			// 
+			// DateMaskedBox
+			// 
+			this->DateMaskedBox->Location = System::Drawing::Point(215, 140);
+			this->DateMaskedBox->Mask = L"00/00/0000";
+			this->DateMaskedBox->Name = L"DateMaskedBox";
+			this->DateMaskedBox->Size = System::Drawing::Size(323, 20);
+			this->DateMaskedBox->TabIndex = 30;
+			this->DateMaskedBox->ValidatingType = System::DateTime::typeid;
+			// 
 			// Sales
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -349,6 +360,7 @@ namespace Muztorg {
 			this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)),
 				static_cast<System::Int32>(static_cast<System::Byte>(64)));
 			this->ClientSize = System::Drawing::Size(847, 485);
+			this->Controls->Add(this->DateMaskedBox);
 			this->Controls->Add(this->SumBox);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->SaleGridView);
@@ -391,8 +403,5 @@ namespace Muztorg {
 	private: System::Void Exit_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void Box_Enter(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void Box_Leave(System::Object^ sender, System::EventArgs^ e);
-	private: System::Void SaleGridView_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
-	private: System::Void SaleGridView_CellEnter(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
-	private: System::Void SaleGridView_CellLeave(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
 };
 }
