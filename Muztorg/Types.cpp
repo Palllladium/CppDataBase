@@ -196,7 +196,7 @@ void StructOfSale::printElement(fstream& fout)
 StructOfSale StructOfSale::set_Pointers(List<Sale>* SaleList, List<Guitar>* GuitarBase)
 {
 	StructOfSale result;
-	result.set_ID(0);
+	//result.set_ID(0);
 	result.set_SaleID(this->SaleID);
 	result.set_SalePtr(SaleList->_search_ID(this->SaleID));
 	result.set_GuitarID(this->GuitarID);
@@ -208,7 +208,7 @@ StructOfSale StructOfSale::set_Pointers(List<Sale>* SaleList, List<Guitar>* Guit
 StructOfSale StructOfSale::update_IDs()
 {
 	StructOfSale result;
-	result.set_ID(0);
+	//result.set_ID(0);
 	result.set_SaleID(to_string(this->SalePtr->getData().get_ID()));
 	result.set_SalePtr(this->SalePtr);
 	result.set_GuitarID(to_string(this->GuitarPtr->getData().get_ID()));

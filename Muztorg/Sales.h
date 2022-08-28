@@ -286,7 +286,7 @@ namespace Muztorg {
 			// 
 			// SaleGridView
 			// 
-			this->SaleGridView->AllowUserToAddRows = true;
+			this->SaleGridView->AllowUserToAddRows = false;
 			this->SaleGridView->AllowUserToDeleteRows = false;
 			this->SaleGridView->AllowUserToResizeColumns = false;
 			this->SaleGridView->AllowUserToResizeRows = false;
@@ -320,9 +320,9 @@ namespace Muztorg {
 			this->SaleGridView->ScrollBars = System::Windows::Forms::ScrollBars::None;
 			this->SaleGridView->Size = System::Drawing::Size(713, 252);
 			this->SaleGridView->TabIndex = 27;
-			this->SaleGridView->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Sales::SaleGridView_CellContentClick);
-			this->SaleGridView->CellEnter += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Sales::SaleGridView_CellEnter);
-			this->SaleGridView->CellLeave += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Sales::SaleGridView_CellLeave);
+			this->SaleGridView->CellBeginEdit += gcnew System::Windows::Forms::DataGridViewCellCancelEventHandler(this, &Muztorg::Sales::SaleGridView_OnCellBeginEdit);
+			this->SaleGridView->CellEndEdit += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Muztorg::Sales::SaleGridView_OnCellEndEdit);
+			this->SaleGridView->CellValueChanged += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Muztorg::Sales::SaleGridView_OnCellValueChanged);
 			this->SaleGridView->EditingControlShowing += gcnew System::Windows::Forms::DataGridViewEditingControlShowingEventHandler(this, &Sales::SaleGridView_EditingControlShowing);
 			// 
 			// SumBox
@@ -432,12 +432,9 @@ namespace Muztorg {
 	private: System::Void Box_Enter(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void Box_Leave(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void TextBox_Changed(System::Object^ sender, System::EventArgs^ e);
-	private: System::Void SaleGridView_CellEnter(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
-	private: System::Void SaleGridView_CellLeave(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
-	private: System::Void SaleGridView_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
-	private: System::Void SaleGridView_EditingControlShowing(System::Object^ sender, System::Windows::Forms::DataGridViewEditingControlShowingEventArgs^ e) {
-		if (this->SaleGridView->CurrentCell->ColumnIndex == 0)
-			e->Control->TextChanged += gcnew System::EventHandler(this, &Sales::TextBox_Changed);
-	}
+	private: System::Void SaleGridView_OnCellEndEdit(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
+	private: System::Void SaleGridView_OnCellBeginEdit(System::Object^ sender, System::Windows::Forms::DataGridViewCellCancelEventArgs^ e);
+	private: System::Void SaleGridView_OnCellValueChanged(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
+	private: System::Void SaleGridView_EditingControlShowing(System::Object^ sender, System::Windows::Forms::DataGridViewEditingControlShowingEventArgs^ e);
 };
 }

@@ -10,12 +10,14 @@ System::Void Muztorg::Sales::Sales_Load(System::Object^ sender, System::EventArg
     DateMaskedBox->ReadOnly = true;
     ToggleChange->Visible = true;
     ToggleChangesOff->Visible = false;
+    this->DataChanged = false;
 
     DataGridViewComboBoxColumn^ Title = gcnew DataGridViewComboBoxColumn();
     Title->HeaderText = "Товар";
     Title->ReadOnly = true;
     Title->Width = 335;
     Title->Name = "Title";
+    //UpdateSourceTrigger = "PropertyChanged";
 
     DataGridViewColumn^ Price = gcnew DataGridViewColumn();
     Price->HeaderText = "Цена";
@@ -126,6 +128,30 @@ System::Void Muztorg::Sales::Box_Leave(System::Object^ sender, System::EventArgs
     return System::Void();
 }
 
+System::Void Muztorg::Sales::SaleGridView_OnCellEndEdit(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e)
+{
+    this->BoxActive = false;
+    return System::Void();
+}
+
+System::Void Muztorg::Sales::SaleGridView_OnCellBeginEdit(System::Object^ sender, System::Windows::Forms::DataGridViewCellCancelEventArgs^ e)
+{
+    this->BoxActive = true;
+    return System::Void();
+}
+
+System::Void Muztorg::Sales::SaleGridView_OnCellValueChanged(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e)
+{
+    if (BoxActive)
+        DataChanged = true;
+    return System::Void();
+}
+
+System::Void Muztorg::Sales::SaleGridView_EditingControlShowing(System::Object^ sender, System::Windows::Forms::DataGridViewEditingControlShowingEventArgs^ e) {
+    if (this->SaleGridView->CurrentCell->ColumnIndex == 0)
+        e->Control->TextChanged += gcnew System::EventHandler(this, &Sales::TextBox_Changed);
+}
+
 System::Void Muztorg::Sales::TextBox_Changed(System::Object^ sender, System::EventArgs^ e)
 {
     string smallString;
@@ -135,30 +161,12 @@ System::Void Muztorg::Sales::TextBox_Changed(System::Object^ sender, System::Eve
     int row = this->SaleGridView->CurrentCell->RowIndex;
     int column = this->SaleGridView->CurrentCell->ColumnIndex;
     //BigString = this->SaleGridView[row, column]->Value->ToString();
-    //BigString = this->SaleGridView->CurrentCell->
-    Convert_String_to_string(BigString, smallString);
+    //BigString = this->SaleGridView->CurrentCell->Value->ToString();
+    /*Convert_String_to_string(BigString, smallString);
     currentGuitar = GuitarBase->_search_Title(smallString);
     this->SaleGridView->Rows[row]->Cells["Price"]->Value = 
-        Convert_string_to_String(currentGuitar->getData().get_Price());
-}
-
-System::Void Muztorg::Sales::SaleGridView_CellEnter(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e)
-{
-    this->BoxActive = true;
-    return System::Void();
-}
-
-System::Void Muztorg::Sales::SaleGridView_CellLeave(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e)
-{
-    this->BoxActive = false;
-    return System::Void();
-}
-
-System::Void Muztorg::Sales::SaleGridView_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
-
-    if (BoxActive)
-        DataChanged = true;
-    return System::Void();
+        Convert_string_to_String(currentGuitar->getData().get_Price());*/
+    MessageBox::Show(this->SaleGridView->CurrentCell->EditedFormattedValue->ToString());
 }
 
 System::Void Muztorg::Sales::Prev_Click(System::Object^ sender, System::EventArgs^ e)
@@ -168,6 +176,8 @@ System::Void Muztorg::Sales::Prev_Click(System::Object^ sender, System::EventArg
     BuyerBox->Enabled = false;
     EmployeeBox->Enabled = false;
     DateMaskedBox->ReadOnly = true;
+    SaleGridView->ReadOnly = true;
+    SaleGridView->AllowUserToAddRows = false;
     ToggleChange->Visible = true;
     ToggleChangesOff->Visible = false;
 
@@ -198,27 +208,29 @@ System::Void Muztorg::Sales::Prev_Click(System::Object^ sender, System::EventArg
 
             this->CurrentPtr->setData(sValue);
 
-            List<Unit<StructOfSale>*>* tmpStrList;
-            Unit<StructOfSale>* tmpStrUnit;
+            Unit<Unit<StructOfSale>*>* strPtr = this->CurrentStrPtr->getHead();
+            Unit<StructOfSale>* tmpStrUnit = strPtr->getData();
             StructOfSale strValue;
 
-            for each (DataGridViewRow ^ row in SaleGridView->Rows) {
-                strValue.set_SalePtr(CurrentPtr);
+            if (this->CurrentStrPtr->getHead() != NULL) {
+                for each (DataGridViewRow ^ row in SaleGridView->Rows) {
+                    strValue.set_SalePtr(CurrentPtr);
 
-                BigString = row->Cells["Title"]->Value->ToString();
-                Convert_String_to_string(BigString, smallString);
-                strValue.set_GuitarPtr(GuitarBase->_search_Title(smallString));
+                    BigString = row->Cells["Title"]->EditedFormattedValue->ToString();
+                    Convert_String_to_string(BigString, smallString);
+                    strValue.set_GuitarPtr(GuitarBase->_search_Title(smallString));
 
-                BigString = row->Cells["Amount"]->Value->ToString();
-                Convert_String_to_string(BigString, smallString);
-                strValue.set_Amount(smallString);
+                    BigString = row->Cells["Amount"]->EditedFormattedValue->ToString();
+                    Convert_String_to_string(BigString, smallString);
+                    strValue.set_Amount(smallString);
 
-                tmpStrUnit->setData(strValue);
-                tmpStrList->push_back(tmpStrUnit);
+                    tmpStrUnit->setData(strValue);
+                    strPtr->setData(tmpStrUnit);
+                    CurrentStrPtr->push_back(tmpStrUnit);
+                    strPtr = strPtr->getNext();
+                    tmpStrUnit = tmpStrUnit->getNext();
+                }
             }
-
-            this->CurrentStrPtr = tmpStrList;
-            //MessageBox::Show("Для изменения состава данной продажи необходимо перейти в соответствующую форму.", "Изменения в базе");
         }
 
         else this->DataChanged = false;
@@ -272,6 +284,8 @@ System::Void Muztorg::Sales::Next_Click(System::Object^ sender, System::EventArg
     BuyerBox->Enabled = false;
     EmployeeBox->Enabled = false;
     DateMaskedBox->ReadOnly = true;
+    SaleGridView->ReadOnly = true;
+    SaleGridView->AllowUserToAddRows = false;
     ToggleChange->Visible = true;
     ToggleChangesOff->Visible = false;
 
@@ -302,27 +316,29 @@ System::Void Muztorg::Sales::Next_Click(System::Object^ sender, System::EventArg
 
             this->CurrentPtr->setData(sValue);
 
-            List<Unit<StructOfSale>*>* tmpStrList;
-            Unit<StructOfSale>* tmpStrUnit;
+            Unit<Unit<StructOfSale>*>* strPtr = this->CurrentStrPtr->getHead();
+            Unit<StructOfSale>* tmpStrUnit = strPtr->getData();
             StructOfSale strValue;
 
-            for each (DataGridViewRow ^ row in SaleGridView->Rows) {
-                strValue.set_SalePtr(CurrentPtr);
+            if (this->CurrentStrPtr->getHead() != NULL) {
+                for each (DataGridViewRow ^ row in SaleGridView->Rows) {
+                    strValue.set_SalePtr(CurrentPtr);
 
-                BigString = row->Cells["Title"]->Value->ToString();
-                Convert_String_to_string(BigString, smallString);
-                strValue.set_GuitarPtr(GuitarBase->_search_Title(smallString));
+                    BigString = row->Cells["Title"]->EditedFormattedValue->ToString();
+                    Convert_String_to_string(BigString, smallString);
+                    strValue.set_GuitarPtr(GuitarBase->_search_Title(smallString));
 
-                BigString = row->Cells["Amount"]->Value->ToString();
-                Convert_String_to_string(BigString, smallString);
-                strValue.set_Amount(smallString);
+                    BigString = row->Cells["Amount"]->EditedFormattedValue->ToString();
+                    Convert_String_to_string(BigString, smallString);
+                    strValue.set_Amount(smallString);
 
-                tmpStrUnit->setData(strValue);
-                tmpStrList->push_back(tmpStrUnit);
+                    tmpStrUnit->setData(strValue);
+                    strPtr->setData(tmpStrUnit);
+                    CurrentStrPtr->push_back(tmpStrUnit);
+                    strPtr = strPtr->getNext();
+                    tmpStrUnit = tmpStrUnit->getNext();
+                }
             }
-
-            this->CurrentStrPtr = tmpStrList;
-            //MessageBox::Show("Для изменения состава данной продажи необходимо перейти в соответствующую форму.", "Изменения в базе");
         }
 
         else this->DataChanged = false;
@@ -417,20 +433,24 @@ System::Void Muztorg::Sales::Add_Click(System::Object^ sender, System::EventArgs
 
         sValue.set_ID(SaleBase->getTail()->getData().get_ID() + 1);
         SaleBase->push_back(sValue);
+        this->CurrentPtr->setData(sValue);
 
         StructOfSale strValue;
         for each(DataGridViewRow^ row in SaleGridView->Rows) {
-            strValue.set_SalePtr(CurrentPtr);
-                
-            BigString = row->Cells["Title"]->Value->ToString();
-            Convert_String_to_string(BigString, smallString);
-            strValue.set_GuitarPtr(GuitarBase->_search_Title(smallString));
+            if (!(String::IsNullOrEmpty(row->Cells[0]->ToString()))) {
+                strValue.set_SalePtr(CurrentPtr);
 
-            BigString = row->Cells["Amount"]->Value->ToString();
-            Convert_String_to_string(BigString, smallString);
-            strValue.set_Amount(smallString);
+                BigString = row->Cells["Title"]->EditedFormattedValue->ToString();
+                Convert_String_to_string(BigString, smallString);
+                strValue.set_GuitarPtr(GuitarBase->_search_Title(smallString));
 
-            StructOfSaleBase->push_back(strValue);
+                BigString = row->Cells["Amount"]->EditedFormattedValue->ToString();
+                Convert_String_to_string(BigString, smallString);
+                strValue.set_Amount(smallString);
+
+                StructOfSaleBase->push_back(strValue);
+            }
+
         }
 
         //MessageBox::Show("Для изменения состава данной продажи необходимо перейти в соответствующую форму.", "Изменения в базе");
@@ -438,6 +458,8 @@ System::Void Muztorg::Sales::Add_Click(System::Object^ sender, System::EventArgs
         BuyerBox->Enabled = false;
         EmployeeBox->Enabled = false;
         DateMaskedBox->ReadOnly = true;
+        SaleGridView->ReadOnly = true;
+        SaleGridView->AllowUserToAddRows = false;
         ToggleChange->Visible = true;
         ToggleChangesOff->Visible = false;
         this->AddMode = false;
@@ -475,11 +497,11 @@ System::Void Muztorg::Sales::Add_Click(System::Object^ sender, System::EventArgs
             for each (DataGridViewRow ^ row in SaleGridView->Rows) {
                 strValue.set_SalePtr(CurrentPtr);
 
-                BigString = row->Cells["Title"]->Value->ToString();
+                BigString = row->Cells["Title"]->EditedFormattedValue->ToString();
                 Convert_String_to_string(BigString, smallString);
                 strValue.set_GuitarPtr(GuitarBase->_search_Title(smallString));
 
-                BigString = row->Cells["Amount"]->Value->ToString();
+                BigString = row->Cells["Amount"]->EditedFormattedValue->ToString();
                 Convert_String_to_string(BigString, smallString);
                 strValue.set_Amount(smallString);
 
@@ -502,6 +524,8 @@ System::Void Muztorg::Sales::Add_Click(System::Object^ sender, System::EventArgs
     BuyerBox->Enabled = true;
     EmployeeBox->Enabled = true;
     DateMaskedBox->ReadOnly = false;
+    SaleGridView->ReadOnly = false;
+    SaleGridView->AllowUserToAddRows = true;
     ToggleChange->Visible = false;
     ToggleChangesOff->Visible = true;
     this->AddMode = true;
@@ -520,6 +544,8 @@ System::Void Muztorg::Sales::Delete_Click(System::Object^ sender, System::EventA
         BuyerBox->Enabled = false;
         EmployeeBox->Enabled = false;
         DateMaskedBox->ReadOnly = true;
+        SaleGridView->ReadOnly = true;
+        SaleGridView->AllowUserToAddRows = false;
         ToggleChange->Visible = true;
         ToggleChangesOff->Visible = false;
 
@@ -646,7 +672,7 @@ System::Void Muztorg::Sales::ToggleChange_Click(System::Object^ sender, System::
     EmployeeBox->Enabled = true;
     DateMaskedBox->ReadOnly = false;
     SaleGridView->ReadOnly = false;
-    //SaleGridView->Price->ReadOnly = true;
+    SaleGridView->AllowUserToAddRows = true;
     ToggleChange->Visible = false;
     ToggleChangesOff->Visible = true;
     return System::Void();
@@ -703,6 +729,7 @@ System::Void Muztorg::Sales::Save_Click(System::Object^ sender, System::EventArg
 
                 tmpStrUnit->setData(strValue);
                 tmpStrList->push_back(tmpStrUnit);
+                this->CurrentStrPtr->push_back(tmpStrUnit);
             }
 
             this->CurrentStrPtr = tmpStrList;
@@ -746,9 +773,8 @@ System::Void Muztorg::Sales::ToggleChangesOff_Click(System::Object^ sender, Syst
     BuyerBox->Enabled = false;
     EmployeeBox->Enabled = false;
     DateMaskedBox->ReadOnly = true;
-    //SaleGridView->ReadOnly = true;
-    //SaleGridView->Columns["Amount"]->ReadOnly = true;
-    //SaleGridView->Columns["Sum"]->ReadOnly = true;
+    SaleGridView->ReadOnly = true;
+    SaleGridView->AllowUserToAddRows = false;
     ToggleChange->Visible = true;
     ToggleChangesOff->Visible = false;
     return System::Void();
