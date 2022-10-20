@@ -1,22 +1,7 @@
 #include "Employees.h"
 
-System::Void Muztorg::Employees::ToggleChanges_Click(System::Object^ sender, System::EventArgs^ e)
-{
-    NameBox->ReadOnly = false;
-    GenderBox->ReadOnly = false;
-    BDateMaskedBox->ReadOnly = false;
-
-    ToggleChanges->Visible = false;
-    ToggleChangesOff->Visible = true;
-    return System::Void();
-}
-
 System::Void Muztorg::Employees::Employees_Load(System::Object^ sender, System::EventArgs^ e)
 {
-    String^ BigString;
-    string smallString;
-
-
     NameBox->ReadOnly = true;
     GenderBox->ReadOnly = true;
     BDateMaskedBox->ReadOnly = true;
@@ -25,101 +10,20 @@ System::Void Muztorg::Employees::Employees_Load(System::Object^ sender, System::
 
     this->CurrentPtr = this->EmployeeBase->getHead();
 
-    smallString = this->CurrentPtr->getData().get_FullName();
-    BigString = Convert_string_to_String(smallString);
-    NameBox->Text = BigString;
-
-    smallString = this->CurrentPtr->getData().get_Gender();
-    BigString = Convert_string_to_String(smallString);
-    GenderBox->Text = BigString;
-
-    smallString = this->CurrentPtr->getData().get_BDate();
-    BigString = Convert_string_to_String(smallString);
-    BDateMaskedBox->Text = BigString;
-
+    NameBox->Text = Convert_string_to_String(this->CurrentPtr->getData().get_FullName());
+    GenderBox->Text = Convert_string_to_String(this->CurrentPtr->getData().get_Gender());
+    BDateMaskedBox->Text = Convert_string_to_String(this->CurrentPtr->getData().get_BDate());
     return System::Void();
 }
 
-System::Void Muztorg::Employees::Employees_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e)
+System::Void Muztorg::Employees::ToggleChanges_Click(System::Object^ sender, System::EventArgs^ e)
 {
-    Form^ form = Application::OpenForms[0];
-    form->Show();
-    return System::Void();
-}
+    NameBox->ReadOnly = false;
+    GenderBox->ReadOnly = false;
+    BDateMaskedBox->ReadOnly = false;
 
-System::Void Muztorg::Employees::NameBox_TextChanged(System::Object^ sender, System::EventArgs^ e)
-{
-
-    if (this->BoxActive == true)
-        this->DataChanged = true;
-    return System::Void();
-}
-
-System::Void Muztorg::Employees::NameBox_Enter(System::Object^ sender, System::EventArgs^ e)
-{
-    this->BoxActive = true;
-    return System::Void();
-}
-
-System::Void Muztorg::Employees::NameBox_Leave(System::Object^ sender, System::EventArgs^ e)
-{
-    this->BoxActive = false;
-    return System::Void();
-}
-
-System::Void Muztorg::Employees::Prev_Click(System::Object^ sender, System::EventArgs^ e)
-{
-    String^ BigString;
-    string smallString;
-
-    this->AddMode = false;
-    NameBox->ReadOnly = true;
-    GenderBox->ReadOnly = true;
-    BDateMaskedBox->ReadOnly = true;
-
-    //Блок сохранения данных
-    //-----------------------------------------------------------------
-    if (this->DataChanged == true)
-    {
-        Employee value;
-        this->DataChanged = false;
-        if (MessageBox::Show("Сохранить внесенные изменения?", "Несохраненные изменения", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
-            ::System::Windows::Forms::DialogResult::Yes)
-        {
-            value.set_ID(this->CurrentPtr->getData().get_ID());
-            BigString = NameBox->Text;
-            Convert_String_to_string(BigString, smallString);
-            value.set_FullName(smallString);
-            BigString = GenderBox->Text;
-            Convert_String_to_string(BigString, smallString);
-            value.set_Gender(smallString);
-            BigString = BDateMaskedBox->Text;
-            Convert_String_to_string(BigString, smallString);
-            value.set_BDate(smallString);
-
-            this->CurrentPtr->setData(value);
-        }
-    }
-    //-----------------------------------------------------------------
-
-    if (this->CurrentPtr->getPrev() == NULL)
-        this->CurrentPtr = EmployeeBase->getTail();
-    else this->CurrentPtr = this->CurrentPtr->getPrev();
-
-    //Вывод данных CurrentPtr
-    //-----------------------------------------------------------------
-    smallString = this->CurrentPtr->getData().get_FullName();
-    BigString = Convert_string_to_String(smallString);
-    NameBox->Text = BigString;
-
-    smallString = this->CurrentPtr->getData().get_Gender();
-    BigString = Convert_string_to_String(smallString);
-    GenderBox->Text = BigString;
-
-    smallString = this->CurrentPtr->getData().get_BDate();
-    BigString = Convert_string_to_String(smallString);
-    BDateMaskedBox->Text = BigString;
-    //-----------------------------------------------------------------
+    ToggleChanges->Visible = false;
+    ToggleChangesOff->Visible = true;
     return System::Void();
 }
 
@@ -134,59 +38,126 @@ System::Void Muztorg::Employees::ToggleChangesOff_Click(System::Object^ sender, 
     return System::Void();
 }
 
-System::Void Muztorg::Employees::Next_Click(System::Object^ sender, System::EventArgs^ e)
+System::Void Muztorg::Employees::Employees_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e)
 {
-    String^ BigString;
-    string smallString;
+    Form^ form = Application::OpenForms[0];
+    form->Show();
+    return System::Void();
+}
 
+System::Void Muztorg::Employees::Box_TextChanged(System::Object^ sender, System::EventArgs^ e)
+{
+
+    if (this->BoxActive == true)
+        this->DataChanged = true;
+    return System::Void();
+}
+
+System::Void Muztorg::Employees::Box_Enter(System::Object^ sender, System::EventArgs^ e)
+{
+    this->BoxActive = true;
+    return System::Void();
+}
+
+System::Void Muztorg::Employees::Box_Leave(System::Object^ sender, System::EventArgs^ e)
+{
+    this->BoxActive = false;
+    return System::Void();
+}
+
+System::Void Muztorg::Employees::Prev_Click(System::Object^ sender, System::EventArgs^ e)
+{
     this->AddMode = false;
     NameBox->ReadOnly = true;
     GenderBox->ReadOnly = true;
     BDateMaskedBox->ReadOnly = true;
+    ToggleChanges->Visible = true;
+    ToggleChangesOff->Visible = false;
 
-    //Блок сохранения данных
-    //-----------------------------------------------------------------
     if (this->DataChanged == true)
     {
-        Employee value;
-        this->DataChanged = false;
         if (MessageBox::Show("Сохранить внесенные изменения?", "Несохраненные изменения", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
             ::System::Windows::Forms::DialogResult::Yes)
         {
+            Employee value;
+            String^ BigString;
+            string smallString;
+
+            this->DataChanged = false;
             value.set_ID(this->CurrentPtr->getData().get_ID());
+
             BigString = NameBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_FullName(smallString);
+
             BigString = GenderBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_Gender(smallString);
+
             BigString = BDateMaskedBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_BDate(smallString);
 
             this->CurrentPtr->setData(value);
         }
+        else this->DataChanged = false;
     }
-    //-----------------------------------------------------------------
+
+    if (this->CurrentPtr->getPrev() == NULL)
+        this->CurrentPtr = EmployeeBase->getTail();
+    else this->CurrentPtr = this->CurrentPtr->getPrev();
+
+    NameBox->Text = Convert_string_to_String(this->CurrentPtr->getData().get_FullName());
+    GenderBox->Text = Convert_string_to_String(this->CurrentPtr->getData().get_Gender());
+    BDateMaskedBox->Text = Convert_string_to_String(this->CurrentPtr->getData().get_BDate());
+    return System::Void();
+}
+
+System::Void Muztorg::Employees::Next_Click(System::Object^ sender, System::EventArgs^ e)
+{
+    this->AddMode = false;
+    NameBox->ReadOnly = true;
+    GenderBox->ReadOnly = true;
+    BDateMaskedBox->ReadOnly = true;
+    ToggleChanges->Visible = true;
+    ToggleChangesOff->Visible = false;
+
+    if (this->DataChanged == true)
+    {
+        if (MessageBox::Show("Сохранить внесенные изменения?", "Несохраненные изменения", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
+            ::System::Windows::Forms::DialogResult::Yes)
+        {
+            Employee value;
+            String^ BigString;
+            string smallString;
+
+            this->DataChanged = false;
+            value.set_ID(this->CurrentPtr->getData().get_ID());
+
+            BigString = NameBox->Text;
+            Convert_String_to_string(BigString, smallString);
+            value.set_FullName(smallString);
+
+            BigString = GenderBox->Text;
+            Convert_String_to_string(BigString, smallString);
+            value.set_Gender(smallString);
+
+            BigString = BDateMaskedBox->Text;
+            Convert_String_to_string(BigString, smallString);
+            value.set_BDate(smallString);
+
+            this->CurrentPtr->setData(value);
+        }
+        else this->DataChanged = false;
+    }
 
     if (this->CurrentPtr->getNext() == NULL)
         this->CurrentPtr = EmployeeBase->getHead();
     else this->CurrentPtr = this->CurrentPtr->getNext();
 
-    //Вывод данных CurrentPtr
-    //-----------------------------------------------------------------
-    smallString = this->CurrentPtr->getData().get_FullName();
-    BigString = Convert_string_to_String(smallString);
-    NameBox->Text = BigString;
-
-    smallString = this->CurrentPtr->getData().get_Gender();
-    BigString = Convert_string_to_String(smallString);
-    GenderBox->Text = BigString;
-
-    smallString = this->CurrentPtr->getData().get_BDate();
-    BigString = Convert_string_to_String(smallString);
-    BDateMaskedBox->Text = BigString;
-    //-----------------------------------------------------------------
+    NameBox->Text = Convert_string_to_String(this->CurrentPtr->getData().get_FullName());
+    GenderBox->Text = Convert_string_to_String(this->CurrentPtr->getData().get_Gender());
+    BDateMaskedBox->Text = Convert_string_to_String(this->CurrentPtr->getData().get_BDate());
     return System::Void();
 }
 
@@ -195,30 +166,62 @@ System::Void Muztorg::Employees::Save_Click(System::Object^ sender, System::Even
     String^ BigString;
     string smallString;
 
-    //Блок сохранения данных
-    //-----------------------------------------------------------------
     if (this->DataChanged == true)
     {
-        Employee value;
-        this->DataChanged = false;
         if (MessageBox::Show("Сохранить внесенные изменения?", "Несохраненные изменения", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
             ::System::Windows::Forms::DialogResult::Yes)
         {
+            Employee value;
+            this->DataChanged = false;
             value.set_ID(this->CurrentPtr->getData().get_ID());
+
             BigString = NameBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_FullName(smallString);
+
             BigString = GenderBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_Gender(smallString);
+
             BigString = BDateMaskedBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_BDate(smallString);
 
             this->CurrentPtr->setData(value);
         }
+        else this->DataChanged = false;
     }
-    //-----------------------------------------------------------------
+
+    return System::Void();
+}
+
+System::Void Muztorg::Employees::SalesReport_Click(System::Object^ sender, System::EventArgs^ e)
+{
+    Muztorg::EmployeesSales_Report^ form = gcnew EmployeesSales_Report(CurrentPtr);
+    form->set_StructsOfSupplyBase(this->StructOfSupplyBase);
+    form->set_StructOfSaleBase(this->StructOfSaleBase);
+    form->set_EmployeeBase(this->EmployeeBase);
+    form->set_GuitarBase(this->GuitarBase);
+    form->set_SupplyBase(this->SupplyBase);
+    form->set_BuyerBase(this->BuyerBase);
+    form->set_SaleBase(this->SaleBase);
+    this->Hide();
+    form->Show();
+    return System::Void();
+}
+
+System::Void Muztorg::Employees::SuppliesReport_Click(System::Object^ sender, System::EventArgs^ e)
+{
+    Muztorg::EmployeesSupplies_Report^ form = gcnew EmployeesSupplies_Report(CurrentPtr);
+    form->set_StructsOfSupplyBase(this->StructOfSupplyBase);
+    form->set_StructOfSaleBase(this->StructOfSaleBase);
+    form->set_EmployeeBase(this->EmployeeBase);
+    form->set_GuitarBase(this->GuitarBase);
+    form->set_SupplyBase(this->SupplyBase);
+    form->set_BuyerBase(this->BuyerBase);
+    form->set_SaleBase(this->SaleBase);
+    this->Hide();
+    form->Show();
     return System::Void();
 }
 
@@ -249,9 +252,11 @@ System::Void Muztorg::Employees::Add_Click(System::Object^ sender, System::Event
         BigString = NameBox->Text;
         Convert_String_to_string(BigString, smallString);
         value.set_FullName(smallString);
+
         BigString = GenderBox->Text;
         Convert_String_to_string(BigString, smallString);
         value.set_Gender(smallString);
+
         BigString = BDateMaskedBox->Text;
         Convert_String_to_string(BigString, smallString);
         value.set_BDate(smallString);
@@ -262,34 +267,38 @@ System::Void Muztorg::Employees::Add_Click(System::Object^ sender, System::Event
         NameBox->ReadOnly = true;
         GenderBox->ReadOnly = true;
         BDateMaskedBox->ReadOnly = true;
+        ToggleChanges->Visible = true;
+        ToggleChangesOff->Visible = false;
         this->AddMode = false;
         this->DataChanged = false;
         return System::Void();
     }
-    //Блок сохранения данных
-    //-----------------------------------------------------------------
+
     if (this->DataChanged == true)
     {
-        Employee value;
-        this->DataChanged = false;
         if (MessageBox::Show("Сохранить внесенные изменения?", "Несохраненные изменения", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
             ::System::Windows::Forms::DialogResult::Yes)
         {
+            Employee value;
+            this->DataChanged = false;
             value.set_ID(this->CurrentPtr->getData().get_ID());
+
             BigString = NameBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_FullName(smallString);
+
             BigString = GenderBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_Gender(smallString);
+
             BigString = BDateMaskedBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_BDate(smallString);
 
             this->CurrentPtr->setData(value);
         }
+        else this->DataChanged = false;
     }
-    //-----------------------------------------------------------------
 
     NameBox->Clear();
     GenderBox->Clear();
@@ -297,81 +306,11 @@ System::Void Muztorg::Employees::Add_Click(System::Object^ sender, System::Event
     NameBox->ReadOnly = false;
     GenderBox->ReadOnly = false;
     BDateMaskedBox->ReadOnly = false;
+    ToggleChanges->Visible = false;
+    ToggleChangesOff->Visible = true;
     this->AddMode = true;
+    this->DataChanged = false;
 
-    return System::Void();
-}
-
-System::Void Muztorg::Employees::Delete_Click(System::Object^ sender, System::EventArgs^ e)
-{
-    int eraseFlag;
-    string errorMessage;
-    String^ BigString;
-    string smallString;
-
-    Unit<Employee>* erasePtr;
-
-    if (this->AddMode == true)
-    {
-        this->AddMode = false;
-        NameBox->ReadOnly = true;
-        GenderBox->ReadOnly = true;
-        BDateMaskedBox->ReadOnly = true;
-
-        //Вывод данных CurrentPtr
-   //-----------------------------------------------------------------
-        smallString = this->CurrentPtr->getData().get_FullName();
-        BigString = Convert_string_to_String(smallString);
-        NameBox->Text = BigString;
-
-        smallString = this->CurrentPtr->getData().get_Gender();
-        BigString = Convert_string_to_String(smallString);
-        GenderBox->Text = BigString;
-
-        smallString = this->CurrentPtr->getData().get_BDate();
-        BigString = Convert_string_to_String(smallString);
-        BDateMaskedBox->Text = BigString;
-        //-----------------------------------------------------------------
-        return System::Void();
-    }
-
-    if (MessageBox::Show("Вы уверенны что хотите удалить эту запить? Отменить это действие будет невозможно.", "Подтверждение удаления", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
-        ::System::Windows::Forms::DialogResult::No)
-        return System::Void();
-
-    erasePtr = this->CurrentPtr;
-
-    if (this->CurrentPtr->getNext() == NULL)
-        this->CurrentPtr = EmployeeBase->getHead();
-    else this->CurrentPtr = this->CurrentPtr->getNext();
-
-    eraseFlag = EmployeeBase->erase(erasePtr);
-
-    if (eraseFlag == 500) {
-        MessageBox::Show("500");
-        this->CurrentPtr = erasePtr;
-        return System::Void();
-    }
-    if (eraseFlag == 404) {
-        MessageBox::Show("404");
-        this->CurrentPtr = erasePtr;
-        return System::Void();
-    }
-
-    //Вывод данных CurrentPtr
-   //-----------------------------------------------------------------
-    smallString = this->CurrentPtr->getData().get_FullName();
-    BigString = Convert_string_to_String(smallString);
-    NameBox->Text = BigString;
-
-    smallString = this->CurrentPtr->getData().get_Gender();
-    BigString = Convert_string_to_String(smallString);
-    GenderBox->Text = BigString;
-
-    smallString = this->CurrentPtr->getData().get_BDate();
-    BigString = Convert_string_to_String(smallString);
-    BDateMaskedBox->Text = BigString;
-    //-----------------------------------------------------------------
     return System::Void();
 }
 

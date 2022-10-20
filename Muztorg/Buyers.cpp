@@ -2,25 +2,14 @@
 
 System::Void Muztorg::Buyers::Buyers_Load(System::Object^ sender, System::EventArgs^ e)
 {
-    String^ BigString;
-    string smallString;
-
     NameBox->ReadOnly = true;
     PhoneBox->ReadOnly = true;
-
     ToggleChanges->Visible = true;
     ToggleChangesOff->Visible = false;
 
     this->CurrentPtr = this->BuyerBase->getHead();
-
-    smallString = this->CurrentPtr->getData().get_FullName();
-    BigString = Convert_string_to_String(smallString);
-    NameBox->Text = BigString;
-
-    smallString = this->CurrentPtr->getData().getPhoneNumber();
-    BigString = Convert_string_to_String(smallString);
-    PhoneBox->Text = BigString;
-
+    NameBox->Text = Convert_string_to_String(this->CurrentPtr->getData().get_FullName());
+    PhoneBox->Text = Convert_string_to_String(this->CurrentPtr->getData().getPhoneNumber());
     return System::Void();
 }
 
@@ -31,20 +20,20 @@ System::Void Muztorg::Buyers::Buyers_FormClosed(System::Object^ sender, System::
     return System::Void();
 }
 
-System::Void Muztorg::Buyers::NameBox_TextChanged(System::Object^ sender, System::EventArgs^ e)
+System::Void Muztorg::Buyers::Box_TextChanged(System::Object^ sender, System::EventArgs^ e)
 {
     if (this->BoxActive == true)
         this->DataChanged = true;
     return System::Void();
 }
 
-System::Void Muztorg::Buyers::NameBox_Enter(System::Object^ sender, System::EventArgs^ e)
+System::Void Muztorg::Buyers::Box_Enter(System::Object^ sender, System::EventArgs^ e)
 {
     this->BoxActive = true;
     return System::Void();
 }
 
-System::Void Muztorg::Buyers::NameBox_Leave(System::Object^ sender, System::EventArgs^ e)
+System::Void Muztorg::Buyers::Box_Leave(System::Object^ sender, System::EventArgs^ e)
 {
     this->BoxActive = false;
     return System::Void();
@@ -52,48 +41,86 @@ System::Void Muztorg::Buyers::NameBox_Leave(System::Object^ sender, System::Even
 
 System::Void Muztorg::Buyers::Next_Click(System::Object^ sender, System::EventArgs^ e)
 {
-    String^ BigString;
-    string smallString;
-
     this->AddMode = false;
     NameBox->ReadOnly = true;
     PhoneBox->ReadOnly = true;
+    ToggleChanges->Visible = true;
+    ToggleChangesOff->Visible = false;
 
-    //-----------------------------------------------------------------
     if (this->DataChanged == true)
     {
-        Buyer value;
         if (MessageBox::Show("Сохранить внесенные изменения?", "Несохраненные изменения", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
             ::System::Windows::Forms::DialogResult::Yes)
         {
+            Buyer value;
+            String^ BigString;
+            string smallString;
+
             this->DataChanged = false;
             value.set_ID(this->CurrentPtr->getData().get_ID());
+
             BigString = NameBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_FullName(smallString);
+
             BigString = PhoneBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_PhoneNumber(smallString);
 
             this->CurrentPtr->setData(value);
         }
+        else this->DataChanged = false;
     }
-    //-----------------------------------------------------------------
 
     if (this->CurrentPtr->getNext() == NULL)
         this->CurrentPtr = BuyerBase->getHead();
     else this->CurrentPtr = this->CurrentPtr->getNext();
 
-    //Вывод данных CurrentPtr
-    //-----------------------------------------------------------------
-    smallString = this->CurrentPtr->getData().get_FullName();
-    BigString = Convert_string_to_String(smallString);
-    NameBox->Text = BigString;
+    NameBox->Text = Convert_string_to_String(this->CurrentPtr->getData().get_FullName());
+    PhoneBox->Text = Convert_string_to_String(this->CurrentPtr->getData().getPhoneNumber());
+    return System::Void();
+}
 
-    smallString = this->CurrentPtr->getData().getPhoneNumber();
-    BigString = Convert_string_to_String(smallString);
-    PhoneBox->Text = BigString;
-    //-----------------------------------------------------------------
+System::Void Muztorg::Buyers::Prev_Click(System::Object^ sender, System::EventArgs^ e)
+{
+    this->AddMode = false;
+    NameBox->ReadOnly = true;
+    PhoneBox->ReadOnly = true;
+    ToggleChanges->Visible = true;
+    ToggleChangesOff->Visible = false;
+
+    if (this->DataChanged == true)
+    {
+        Buyer value;
+        if (MessageBox::Show("Сохранить внесенные изменения?", "Несохраненные изменения", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
+            ::System::Windows::Forms::DialogResult::Yes)
+        {
+            Buyer value;
+            String^ BigString;
+            string smallString;
+
+            this->DataChanged = false;
+            value.set_ID(this->CurrentPtr->getData().get_ID());
+
+            BigString = NameBox->Text;
+            Convert_String_to_string(BigString, smallString);
+            value.set_FullName(smallString);
+
+            BigString = PhoneBox->Text;
+            Convert_String_to_string(BigString, smallString);
+            value.set_PhoneNumber(smallString);
+
+            this->CurrentPtr->setData(value);
+        }
+        else this->DataChanged = false;
+    }
+
+    if (this->CurrentPtr->getPrev() == NULL)
+        this->CurrentPtr = BuyerBase->getTail();
+    else this->CurrentPtr = this->CurrentPtr->getPrev();
+
+    NameBox->Text = Convert_string_to_String(this->CurrentPtr->getData().get_FullName());
+    PhoneBox->Text = Convert_string_to_String(this->CurrentPtr->getData().getPhoneNumber());
     return System::Void();
 }
 
@@ -119,6 +146,7 @@ System::Void Muztorg::Buyers::Add_Click(System::Object^ sender, System::EventArg
         BigString = NameBox->Text;
         Convert_String_to_string(BigString, smallString);
         value.set_FullName(smallString);
+
         BigString = PhoneBox->Text;
         Convert_String_to_string(BigString, smallString);
         value.set_PhoneNumber(smallString);
@@ -128,85 +156,45 @@ System::Void Muztorg::Buyers::Add_Click(System::Object^ sender, System::EventArg
 
         NameBox->ReadOnly = true;
         PhoneBox->ReadOnly = true;
+        ToggleChanges->Visible = true;
+        ToggleChangesOff->Visible = false;
         this->AddMode = false;
         this->DataChanged = false;
         return System::Void();
     }
-    //-----------------------------------------------------------------
+
     if (this->DataChanged == true)
     {
-        Buyer value;
         if (MessageBox::Show("Сохранить внесенные изменения?", "Несохраненные изменения", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
             ::System::Windows::Forms::DialogResult::Yes)
         {
+            Buyer value;
             this->DataChanged = false;
             value.set_ID(this->CurrentPtr->getData().get_ID());
+
             BigString = NameBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_FullName(smallString);
+
             BigString = PhoneBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_PhoneNumber(smallString);
 
             this->CurrentPtr->setData(value);
         }
+        else this->DataChanged = false;
     }
-    //-----------------------------------------------------------------
 
     NameBox->Clear();
     PhoneBox->Clear();
 
     NameBox->ReadOnly = false;
     PhoneBox->ReadOnly = false;
+    ToggleChanges->Visible = false;
+    ToggleChangesOff->Visible = true;
+
     this->AddMode = true;
 
-    return System::Void();
-}
-
-System::Void Muztorg::Buyers::button1_Click(System::Object^ sender, System::EventArgs^ e)
-{
-    String^ BigString;
-    string smallString;
-
-    this->AddMode = false;
-    NameBox->ReadOnly = true;
-    PhoneBox->ReadOnly = true;
-
-    //-----------------------------------------------------------------
-    if (this->DataChanged == true)
-    {
-        Buyer value;
-        if (MessageBox::Show("Сохранить внесенные изменения?", "Несохраненные изменения", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
-            ::System::Windows::Forms::DialogResult::Yes)
-        {
-            this->DataChanged = false;
-            value.set_ID(this->CurrentPtr->getData().get_ID());
-            BigString = NameBox->Text;
-            Convert_String_to_string(BigString, smallString);
-            value.set_FullName(smallString);
-            BigString = PhoneBox->Text;
-            Convert_String_to_string(BigString, smallString);
-            value.set_PhoneNumber(smallString);
-
-            this->CurrentPtr->setData(value);
-        }
-    }
-    //-----------------------------------------------------------------
-
-    if (this->CurrentPtr->getPrev() == NULL)
-        this->CurrentPtr = BuyerBase->getTail();
-    else this->CurrentPtr = this->CurrentPtr->getPrev();
-
-    //Вывод данных CurrentPtr
-    //-----------------------------------------------------------------
-    smallString = this->CurrentPtr->getData().get_FullName();
-    BigString = Convert_string_to_String(smallString);
-    NameBox->Text = BigString;
-
-    smallString = this->CurrentPtr->getData().getPhoneNumber();
-    BigString = Convert_string_to_String(smallString);
-    PhoneBox->Text = BigString;
-    //-----------------------------------------------------------------
     return System::Void();
 }
 
@@ -235,92 +223,43 @@ System::Void Muztorg::Buyers::Save_Click(System::Object^ sender, System::EventAr
     String^ BigString;
     string smallString;
 
-    //Блок сохранения данных
-    //-----------------------------------------------------------------
     if (this->DataChanged == true)
     {
-        Buyer value;
         if (MessageBox::Show("Сохранить внесенные изменения?", "Несохраненные изменения", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
             ::System::Windows::Forms::DialogResult::Yes)
         {
+            Buyer value;
             this->DataChanged = false;
             value.set_ID(this->CurrentPtr->getData().get_ID());
+
             BigString = NameBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_FullName(smallString);
+
             BigString = PhoneBox->Text;
             Convert_String_to_string(BigString, smallString);
             value.set_PhoneNumber(smallString);
 
             this->CurrentPtr->setData(value);
         }
+        else this->DataChanged = false;
     }
-    //-----------------------------------------------------------------
+
     return System::Void();
 }
 
-System::Void Muztorg::Buyers::Delete_Click(System::Object^ sender, System::EventArgs^ e)
+System::Void Muztorg::Buyers::PurchaseReport_Click(System::Object^ sender, System::EventArgs^ e)
 {
-    int eraseFlag;
-    string errorMessage;
-    String^ BigString;
-    string smallString;
-
-    Unit<Buyer>* erasePtr;
-
-    if (this->AddMode == true)
-    {
-        this->AddMode = false;
-        NameBox->ReadOnly = true;
-        PhoneBox->ReadOnly = true;
-
-
-        //Вывод данных CurrentPtr
-   //-----------------------------------------------------------------
-        smallString = this->CurrentPtr->getData().get_FullName();
-        BigString = Convert_string_to_String(smallString);
-        NameBox->Text = BigString;
-
-        smallString = this->CurrentPtr->getData().getPhoneNumber();
-        BigString = Convert_string_to_String(smallString);
-        PhoneBox->Text = BigString;
-        //-----------------------------------------------------------------
-        return System::Void();
-    }
-
-    if (MessageBox::Show("Вы уверенны что хотите удалить эту запить? Отменить это действие будет невозможно.", "Подтверждение удаления", MessageBoxButtons::YesNo, MessageBoxIcon::Information) ==
-        ::System::Windows::Forms::DialogResult::No)
-        return System::Void();
-
-    erasePtr = this->CurrentPtr;
-
-    if (this->CurrentPtr->getNext() == NULL)
-        this->CurrentPtr = BuyerBase->getHead();
-    else this->CurrentPtr = this->CurrentPtr->getNext();
-
-    eraseFlag = BuyerBase->erase(erasePtr);
-
-    if (eraseFlag == 500) {
-        MessageBox::Show("500");
-        this->CurrentPtr = erasePtr;
-        return System::Void();
-    }
-    if (eraseFlag == 404) {
-        MessageBox::Show("404");
-        this->CurrentPtr = erasePtr;
-        return System::Void();
-    }
-
-    //Вывод данных CurrentPtr
-   //-----------------------------------------------------------------
-    smallString = this->CurrentPtr->getData().get_FullName();
-    BigString = Convert_string_to_String(smallString);
-    NameBox->Text = BigString;
-
-    smallString = this->CurrentPtr->getData().getPhoneNumber();
-    BigString = Convert_string_to_String(smallString);
-    PhoneBox->Text = BigString;
-    //-----------------------------------------------------------------
+    Muztorg::BuyersSales_Report^ form = gcnew BuyersSales_Report(CurrentPtr);
+    form->set_StructsOfSupplyBase(this->StructOfSupplyBase);
+    form->set_StructOfSaleBase(this->StructOfSaleBase);
+    form->set_EmployeeBase(this->EmployeeBase);
+    form->set_GuitarBase(this->GuitarBase);
+    form->set_SupplyBase(this->SupplyBase);
+    form->set_BuyerBase(this->BuyerBase);
+    form->set_SaleBase(this->SaleBase);
+    this->Hide();
+    form->Show();
     return System::Void();
 }
 

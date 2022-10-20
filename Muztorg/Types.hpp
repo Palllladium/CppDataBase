@@ -117,6 +117,7 @@ class Sales_list : public List<Sale>
 public:
 	List<Unit<Sale>*>* _search_Employee(string value);
 	List<Unit<Sale>*>* _search_Buyer(string value);
+	Unit<Sale>* _search_Sale(int value);
 	void set_Pointers(List<Buyer>* BuyerBase, List<Employee>* EmployeeBase);
 	void update_Pointers();
 };
@@ -153,6 +154,7 @@ class StructsOfSales_list : public List<StructOfSale>
 {
 public:
 	List<Unit<StructOfSale>*>* _search_Sale(int value);
+	List<Unit<StructOfSale>*>* _search_Guitar(int value);
 	void set_Pointers(Sales_list* SaleBase, List<Guitar>* GuitarBase);
 	void update_Pointers();
 };
@@ -183,6 +185,7 @@ class Supplies_list : public List<Supply>
 {
 public:
 	List<Unit<Supply>*>* _search_Employee(string value);
+	Unit<Supply>* _search_Supply(int value);
 	void set_Pointers(List<Employee>* EmployeeBase);
 	void update_Pointers();
 };
@@ -219,6 +222,7 @@ class StructsOfSupplies_list : public List<StructOfSupply>
 {
 public:
 	List<Unit<StructOfSupply>*>* _search_Supply(int value);
+	List<Unit<StructOfSupply>*>* _search_Guitar(int value);
 	void set_Pointers(Supplies_list* SupplyBase, List<Guitar>* GuitarBase);
 	void update_Pointers();
 };

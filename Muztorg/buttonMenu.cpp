@@ -1,14 +1,22 @@
 #include "buttonMenu.h"
 #include "Buyers.h"
+#include "BuyersSales_Report.h"
 #include "Employees.h"
+#include "EmployeesSales_Report.h"
+#include "EmployeesSupplies_Report.h"
 #include "Guitars.h"
+#include "GuitarsSales_Report.h"
+#include "GuitarsSupplies_Report.h"
 #include "Sales.h"
 #include "Supplies.h"
+#include "Check_Report.h"
+#include "StructOfSales.h"
+#include "StructOfSupplies.h"
 
 
 #define BUYERS "buyers.txt"
 #define EMPLOYEES "employees.txt"
-#define GUITARS "guitars.txt"
+#define GUITARS "guitars_list.txt"
 #define SUPPSTRUCT "struct_of_supplies.txt"
 #define SALESTRUCT "struct_of_sales.txt"
 #define SALES "sales.txt"
@@ -96,7 +104,7 @@ System::Void Muztorg::buttonMenu::GuitarsButton_Click(System::Object^ sender, Sy
 	form->set_SaleBase(this->SaleBase);
 	form->set_StructOfSaleBase(this->StructOfSaleBase);
 	form->set_SupplyBase(this->SupplyBase);
-	form->set_StructsOfSuppliesBase(this->StructOfSupplyBase);
+	form->set_StructsOfSupplyBase(this->StructOfSupplyBase);
 	this->Hide();
 	form->Show();
 	return System::Void();

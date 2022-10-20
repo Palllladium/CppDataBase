@@ -57,19 +57,31 @@
     <ClInclude Include="Unit.hpp">
       <Filter>Other\hpp</Filter>
     </ClInclude>
-    <ClInclude Include="SalesEmployee_Report.h">
-      <Filter>Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="SuppliesEmployee_Report.h">
-      <Filter>Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="SalesGuitar_Report.h">
-      <Filter>Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="SuppliesGuitar_Report.h">
-      <Filter>Menu</Filter>
-    </ClInclude>
     <ClInclude Include="buttonMenu.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="GuitarsSales_Report.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="GuitarsSupplies_Report.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="BuyersSales_Report.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="EmployeesSales_Report.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="EmployeesSupplies_Report.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Check_Report.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="StructOfSales.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="StructOfSupplies.h">
       <Filter>Menu</Filter>
     </ClInclude>
   </ItemGroup>
@@ -95,19 +107,31 @@
     <ClCompile Include="Types.cpp">
       <Filter>Other\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="SalesEmployee_Report.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="SuppliesEmployee_Report.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="SalesGuitar_Report.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="SuppliesGuitar_Report.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="buttonMenu.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="GuitarsSales_Report.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="GuitarsSupplies_Report.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="BuyersSales_Report.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="EmployeesSales_Report.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="EmployeesSupplies_Report.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Check_Report.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="StructOfSales.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="StructOfSupplies.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -124,17 +148,19 @@
     <Text Include="employees.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
-    <Text Include="guitars.txt">
-      <Filter>Файлы ресурсов</Filter>
-    </Text>
     <Text Include="struct_of_sales.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
     <Text Include="buyers.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
-    <Text Include="FUTUREWORK.txt">
+    <Text Include="guitars_list.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Preview.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>

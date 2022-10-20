@@ -1,5 +1,7 @@
 #pragma once
 #include "buttonMenu.h"
+#include "Check_Report.h"
+#include "StructOfSales.h"
 
 namespace Muztorg {
 
@@ -39,6 +41,8 @@ namespace Muztorg {
 	protected:
 	private:
 
+		Unit<Sale>* CurrentPtr;
+		List<Unit<StructOfSale>*>* CurrentStrPtr;
 		List<Buyer>* BuyerBase;
 		List<Employee>* EmployeeBase;
 		List<Guitar>* GuitarBase;
@@ -46,9 +50,6 @@ namespace Muztorg {
 		StructsOfSales_list* StructOfSaleBase;
 		Supplies_list* SupplyBase;
 		StructsOfSupplies_list* StructOfSupplyBase;
-
-		Unit<Sale>* CurrentPtr;
-		List<Unit<StructOfSale>*>* CurrentStrPtr;
 
 		bool DataChanged;
 		bool BoxActive;
@@ -60,7 +61,6 @@ namespace Muztorg {
 	private: System::Windows::Forms::MaskedTextBox^ DateMaskedBox;
 	private: System::Windows::Forms::TextBox^ SumBox;
 
-	private: System::Windows::Forms::Button^ Delete;
 	private: System::Windows::Forms::Button^ ToggleChange;
 	private: System::Windows::Forms::Button^ ToggleChangesOff;
 	private: System::Windows::Forms::Button^ Save;
@@ -74,6 +74,7 @@ namespace Muztorg {
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::Label^ label3;
 	private: System::Windows::Forms::Label^ label4;
+	private: System::Windows::Forms::Button^ strSaleButton;
 
 	private: System::Windows::Forms::DataGridView^ SaleGridView;
 
@@ -103,10 +104,10 @@ namespace Muztorg {
 			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle1 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle2 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle3 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(Sales::typeid));
 			this->BuyerBox = (gcnew System::Windows::Forms::ComboBox());
 			this->EmployeeBox = (gcnew System::Windows::Forms::ComboBox());
 			this->DateMaskedBox = (gcnew System::Windows::Forms::MaskedTextBox());
-			this->Delete = (gcnew System::Windows::Forms::Button());
 			this->ToggleChangesOff = (gcnew System::Windows::Forms::Button());
 			this->ToggleChange = (gcnew System::Windows::Forms::Button());
 			this->Save = (gcnew System::Windows::Forms::Button());
@@ -121,6 +122,7 @@ namespace Muztorg {
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->strSaleButton = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->SaleGridView))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -163,27 +165,14 @@ namespace Muztorg {
 			this->DateMaskedBox->Enter += gcnew System::EventHandler(this, &Sales::Box_Enter);
 			this->DateMaskedBox->Leave += gcnew System::EventHandler(this, &Sales::Box_Leave);
 			// 
-			// Delete
-			// 
-			this->Delete->BackColor = System::Drawing::Color::DarkCyan;
-			this->Delete->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->Delete->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
-			this->Delete->Location = System::Drawing::Point(672, 107);
-			this->Delete->Name = L"Delete";
-			this->Delete->Size = System::Drawing::Size(107, 35);
-			this->Delete->TabIndex = 21;
-			this->Delete->Text = L"Удалить";
-			this->Delete->UseVisualStyleBackColor = false;
-			this->Delete->Click += gcnew System::EventHandler(this, &Sales::Delete_Click);
-			// 
 			// ToggleChangesOff
 			// 
 			this->ToggleChangesOff->BackColor = System::Drawing::Color::DarkCyan;
 			this->ToggleChangesOff->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->ToggleChangesOff->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
-			this->ToggleChangesOff->Location = System::Drawing::Point(559, 66);
+			this->ToggleChangesOff->Location = System::Drawing::Point(559, 87);
 			this->ToggleChangesOff->Name = L"ToggleChangesOff";
-			this->ToggleChangesOff->Size = System::Drawing::Size(220, 35);
+			this->ToggleChangesOff->Size = System::Drawing::Size(107, 46);
 			this->ToggleChangesOff->TabIndex = 20;
 			this->ToggleChangesOff->Text = L"Запретить изменения";
 			this->ToggleChangesOff->UseVisualStyleBackColor = false;
@@ -194,9 +183,9 @@ namespace Muztorg {
 			this->ToggleChange->BackColor = System::Drawing::Color::DarkCyan;
 			this->ToggleChange->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->ToggleChange->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
-			this->ToggleChange->Location = System::Drawing::Point(559, 66);
+			this->ToggleChange->Location = System::Drawing::Point(559, 88);
 			this->ToggleChange->Name = L"ToggleChange";
-			this->ToggleChange->Size = System::Drawing::Size(220, 35);
+			this->ToggleChange->Size = System::Drawing::Size(107, 45);
 			this->ToggleChange->TabIndex = 18;
 			this->ToggleChange->Text = L"Разрешить изменения";
 			this->ToggleChange->UseVisualStyleBackColor = false;
@@ -207,9 +196,9 @@ namespace Muztorg {
 			this->Save->BackColor = System::Drawing::Color::MediumSeaGreen;
 			this->Save->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Save->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
-			this->Save->Location = System::Drawing::Point(672, 25);
+			this->Save->Location = System::Drawing::Point(672, 35);
 			this->Save->Name = L"Save";
-			this->Save->Size = System::Drawing::Size(107, 35);
+			this->Save->Size = System::Drawing::Size(107, 46);
 			this->Save->TabIndex = 19;
 			this->Save->Text = L"Сохранить";
 			this->Save->UseVisualStyleBackColor = false;
@@ -217,13 +206,13 @@ namespace Muztorg {
 			// 
 			// Add
 			// 
-			this->Add->BackColor = System::Drawing::Color::DarkCyan;
+			this->Add->BackColor = System::Drawing::Color::Gold;
 			this->Add->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Add->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
 			this->Add->ForeColor = System::Drawing::SystemColors::InactiveCaptionText;
-			this->Add->Location = System::Drawing::Point(559, 107);
+			this->Add->Location = System::Drawing::Point(672, 88);
 			this->Add->Name = L"Add";
-			this->Add->Size = System::Drawing::Size(107, 35);
+			this->Add->Size = System::Drawing::Size(107, 46);
 			this->Add->TabIndex = 17;
 			this->Add->Text = L"Добавить";
 			this->Add->UseVisualStyleBackColor = false;
@@ -234,7 +223,7 @@ namespace Muztorg {
 			this->Prev->BackColor = System::Drawing::Color::DarkCyan;
 			this->Prev->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Prev->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
-			this->Prev->Location = System::Drawing::Point(526, 430);
+			this->Prev->Location = System::Drawing::Point(393, 431);
 			this->Prev->Name = L"Prev";
 			this->Prev->Size = System::Drawing::Size(75, 29);
 			this->Prev->TabIndex = 16;
@@ -248,7 +237,7 @@ namespace Muztorg {
 			this->Next->BackColor = System::Drawing::Color::DarkCyan;
 			this->Next->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Next->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
-			this->Next->Location = System::Drawing::Point(607, 430);
+			this->Next->Location = System::Drawing::Point(474, 431);
 			this->Next->Name = L"Next";
 			this->Next->Size = System::Drawing::Size(75, 29);
 			this->Next->TabIndex = 15;
@@ -264,7 +253,7 @@ namespace Muztorg {
 			this->Exit->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Exit->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
 			this->Exit->ForeColor = System::Drawing::SystemColors::ButtonFace;
-			this->Exit->Location = System::Drawing::Point(688, 430);
+			this->Exit->Location = System::Drawing::Point(695, 431);
 			this->Exit->Name = L"Exit";
 			this->Exit->Size = System::Drawing::Size(75, 29);
 			this->Exit->TabIndex = 14;
@@ -277,12 +266,13 @@ namespace Muztorg {
 			this->Bill->BackColor = System::Drawing::Color::DarkCyan;
 			this->Bill->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Bill->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
-			this->Bill->Location = System::Drawing::Point(559, 25);
+			this->Bill->Location = System::Drawing::Point(559, 35);
 			this->Bill->Name = L"Bill";
-			this->Bill->Size = System::Drawing::Size(107, 35);
+			this->Bill->Size = System::Drawing::Size(107, 46);
 			this->Bill->TabIndex = 22;
 			this->Bill->Text = L"Чек";
 			this->Bill->UseVisualStyleBackColor = false;
+			this->Bill->Click += gcnew System::EventHandler(this, &Sales::Check_Click);
 			// 
 			// SaleGridView
 			// 
@@ -308,6 +298,7 @@ namespace Muztorg {
 			dataGridViewCellStyle2->WrapMode = System::Windows::Forms::DataGridViewTriState::False;
 			this->SaleGridView->DefaultCellStyle = dataGridViewCellStyle2;
 			this->SaleGridView->Location = System::Drawing::Point(66, 157);
+			this->SaleGridView->MultiSelect = false;
 			this->SaleGridView->Name = L"SaleGridView";
 			dataGridViewCellStyle3->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
 			dataGridViewCellStyle3->BackColor = System::Drawing::SystemColors::Control;
@@ -317,6 +308,7 @@ namespace Muztorg {
 			dataGridViewCellStyle3->SelectionForeColor = System::Drawing::SystemColors::HighlightText;
 			dataGridViewCellStyle3->WrapMode = System::Windows::Forms::DataGridViewTriState::True;
 			this->SaleGridView->RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+			this->SaleGridView->RowHeadersWidthSizeMode = System::Windows::Forms::DataGridViewRowHeadersWidthSizeMode::DisableResizing;
 			this->SaleGridView->ScrollBars = System::Windows::Forms::ScrollBars::None;
 			this->SaleGridView->Size = System::Drawing::Size(713, 252);
 			this->SaleGridView->TabIndex = 27;
@@ -328,10 +320,10 @@ namespace Muztorg {
 			// SumBox
 			// 
 			this->SumBox->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
-			this->SumBox->Location = System::Drawing::Point(261, 433);
+			this->SumBox->Location = System::Drawing::Point(252, 434);
 			this->SumBox->Name = L"SumBox";
 			this->SumBox->ReadOnly = true;
-			this->SumBox->Size = System::Drawing::Size(250, 23);
+			this->SumBox->Size = System::Drawing::Size(126, 23);
 			this->SumBox->TabIndex = 29;
 			// 
 			// label1
@@ -364,7 +356,7 @@ namespace Muztorg {
 			this->label3->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->label3->ForeColor = System::Drawing::SystemColors::HighlightText;
-			this->label3->Location = System::Drawing::Point(75, 433);
+			this->label3->Location = System::Drawing::Point(66, 434);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(180, 21);
 			this->label3->TabIndex = 28;
@@ -382,13 +374,27 @@ namespace Muztorg {
 			this->label4->TabIndex = 26;
 			this->label4->Text = L"Дата продажи:";
 			// 
+			// strSaleButton
+			// 
+			this->strSaleButton->BackColor = System::Drawing::Color::DodgerBlue;
+			this->strSaleButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->strSaleButton->Font = (gcnew System::Drawing::Font(L"Cascadia Mono ExtraLight", 9.75F));
+			this->strSaleButton->Location = System::Drawing::Point(555, 431);
+			this->strSaleButton->Name = L"strSaleButton";
+			this->strSaleButton->Size = System::Drawing::Size(134, 29);
+			this->strSaleButton->TabIndex = 31;
+			this->strSaleButton->Text = L"Подробнее";
+			this->strSaleButton->UseVisualStyleBackColor = false;
+			this->strSaleButton->Click += gcnew System::EventHandler(this, &Sales::strOfSale_Click);
+			// 
 			// Sales
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)),
 				static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->ClientSize = System::Drawing::Size(847, 485);
+			this->ClientSize = System::Drawing::Size(847, 487);
+			this->Controls->Add(this->strSaleButton);
 			this->Controls->Add(this->SumBox);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->SaleGridView);
@@ -396,7 +402,6 @@ namespace Muztorg {
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->Bill);
-			this->Controls->Add(this->Delete);
 			this->Controls->Add(this->ToggleChangesOff);
 			this->Controls->Add(this->Save);
 			this->Controls->Add(this->ToggleChange);
@@ -407,8 +412,11 @@ namespace Muztorg {
 			this->Controls->Add(this->DateMaskedBox);
 			this->Controls->Add(this->EmployeeBox);
 			this->Controls->Add(this->BuyerBox);
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
+			this->MaximizeBox = false;
+			this->MinimizeBox = false;
 			this->Name = L"Sales";
-			this->Text = L"Sales";
+			this->Text = L"Продажи";
 			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &Sales::Sales_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &Sales::Sales_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->SaleGridView))->EndInit();
@@ -423,18 +431,18 @@ namespace Muztorg {
 	private: System::Void Prev_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void Next_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void Add_Click(System::Object^ sender, System::EventArgs^ e);
-	private: System::Void Delete_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void ToggleChange_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void Save_Click(System::Object^ sender, System::EventArgs^ e);
-	//private: System::Void Bill_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void Check_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void ToggleChangesOff_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void Exit_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void Box_Enter(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void Box_Leave(System::Object^ sender, System::EventArgs^ e);
-	private: System::Void TextBox_Changed(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void SaleGridView_OnCellEndEdit(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
 	private: System::Void SaleGridView_OnCellBeginEdit(System::Object^ sender, System::Windows::Forms::DataGridViewCellCancelEventArgs^ e);
 	private: System::Void SaleGridView_OnCellValueChanged(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e);
 	private: System::Void SaleGridView_EditingControlShowing(System::Object^ sender, System::Windows::Forms::DataGridViewEditingControlShowingEventArgs^ e);
+	private: System::Void TextBox_Changed(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void strOfSale_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }

@@ -124,11 +124,29 @@
     <ClInclude Include="Buyers.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="BuyersSales_Report.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="Check_Report.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Employees.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="EmployeesSales_Report.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="EmployeesSupplies_Report.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Func.h" />
     <ClInclude Include="Guitars.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="GuitarsSales_Report.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="GuitarsSupplies_Report.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="include.h" />
@@ -136,19 +154,13 @@
     <ClInclude Include="Sales.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="SalesEmployee_Report.h">
+    <ClInclude Include="StructOfSales.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="SalesGuitar_Report.h">
+    <ClInclude Include="StructOfSupplies.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Supplies.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-    <ClInclude Include="SuppliesEmployee_Report.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-    <ClInclude Include="SuppliesGuitar_Report.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Types.hpp" />
@@ -157,15 +169,19 @@
   <ItemGroup>
     <ClCompile Include="buttonMenu.cpp" />
     <ClCompile Include="Buyers.cpp" />
+    <ClCompile Include="BuyersSales_Report.cpp" />
+    <ClCompile Include="Check_Report.cpp" />
     <ClCompile Include="Employees.cpp" />
+    <ClCompile Include="EmployeesSales_Report.cpp" />
+    <ClCompile Include="EmployeesSupplies_Report.cpp" />
     <ClCompile Include="Func.cpp" />
     <ClCompile Include="Guitars.cpp" />
+    <ClCompile Include="GuitarsSales_Report.cpp" />
+    <ClCompile Include="GuitarsSupplies_Report.cpp" />
     <ClCompile Include="Sales.cpp" />
-    <ClCompile Include="SalesEmployee_Report.cpp" />
-    <ClCompile Include="SalesGuitar_Report.cpp" />
+    <ClCompile Include="StructOfSales.cpp" />
+    <ClCompile Include="StructOfSupplies.cpp" />
     <ClCompile Include="Supplies.cpp" />
-    <ClCompile Include="SuppliesEmployee_Report.cpp" />
-    <ClCompile Include="SuppliesGuitar_Report.cpp" />
     <ClCompile Include="Types.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -173,17 +189,58 @@
       <DeploymentContent>true</DeploymentContent>
     </Text>
     <Text Include="employees.txt" />
-    <Text Include="FUTUREWORK.txt" />
-    <Text Include="guitars.txt" />
+    <Text Include="guitars_list.txt" />
     <Text Include="struct_of_supplies.txt" />
     <Text Include="struct_of_sales.txt" />
     <Text Include="sales.txt" />
     <Text Include="supplies.txt" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="buttonMenu.resx">
+      <DependentUpon>buttonMenu.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Buyers.resx">
+      <DependentUpon>Buyers.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BuyersSales_Report.resx">
+      <DependentUpon>BuyersSales_Report.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Check_Report.resx">
+      <DependentUpon>Check_Report.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Employees.resx">
+      <DependentUpon>Employees.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmployeesSales_Report.resx">
+      <DependentUpon>EmployeesSales_Report.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmployeesSupplies_Report.resx">
+      <DependentUpon>EmployeesSupplies_Report.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Guitars.resx">
+      <DependentUpon>Guitars.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GuitarsSales_Report.resx">
+      <DependentUpon>GuitarsSales_Report.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GuitarsSupplies_Report.resx">
+      <DependentUpon>GuitarsSupplies_Report.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Sales.resx">
       <DependentUpon>Sales.h</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="StructOfSales.resx">
+      <DependentUpon>StructOfSales.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StructOfSupplies.resx">
+      <DependentUpon>StructOfSupplies.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Supplies.resx">
+      <DependentUpon>Supplies.h</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Preview.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

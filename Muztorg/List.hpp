@@ -98,7 +98,7 @@ inline void List<T>::pop_front()
 		Unit<T>* temp;
 		temp = this->head;
 		this->head = this->head->getNext();
-		head->setPrev(NULL);
+		//head->setPrev(NULL);
 		delete temp;
 		temp = nullptr;
 		size--;

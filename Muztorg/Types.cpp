@@ -148,6 +148,19 @@ List<Unit<Sale>*>* Sales_list::_search_Buyer(string value)
 	return resultList;
 }
 
+Unit<Sale>* Sales_list::_search_Sale(int value)
+{
+	Unit<Sale>* ptr;
+	ptr = this->getHead();
+
+	while (ptr != NULL) {
+		if (ptr->getData().get_ID() == value)
+			break;
+		ptr = ptr->getNext();
+	}
+	return ptr;
+}
+
 void Sales_list::set_Pointers(List<Buyer>* BuyerBase, List<Employee>* EmployeeBase)
 {
 	Unit<Sale>* ptr;
@@ -175,8 +188,6 @@ void Sales_list::update_Pointers()
 void StructOfSale::fillElement(fstream& fin)
 {
 	string temp;
-	//getline(fin, temp);
-	//this->set_ID(stoi(temp));
 	getline(fin, temp);
 	this->set_SaleID(temp);
 	getline(fin, temp);
@@ -187,7 +198,6 @@ void StructOfSale::fillElement(fstream& fin)
 
 void StructOfSale::printElement(fstream& fout)
 {
-	//fout << this->get_ID() << "\n";
 	fout << this->get_SaleID() << "\n";
 	fout << this->get_GuitarID() << "\n";
 	fout << this->get_Amount();
@@ -196,7 +206,6 @@ void StructOfSale::printElement(fstream& fout)
 StructOfSale StructOfSale::set_Pointers(List<Sale>* SaleList, List<Guitar>* GuitarBase)
 {
 	StructOfSale result;
-	//result.set_ID(0);
 	result.set_SaleID(this->SaleID);
 	result.set_SalePtr(SaleList->_search_ID(this->SaleID));
 	result.set_GuitarID(this->GuitarID);
@@ -208,7 +217,6 @@ StructOfSale StructOfSale::set_Pointers(List<Sale>* SaleList, List<Guitar>* Guit
 StructOfSale StructOfSale::update_IDs()
 {
 	StructOfSale result;
-	//result.set_ID(0);
 	result.set_SaleID(to_string(this->SalePtr->getData().get_ID()));
 	result.set_SalePtr(this->SalePtr);
 	result.set_GuitarID(to_string(this->GuitarPtr->getData().get_ID()));
@@ -225,6 +233,20 @@ List<Unit<StructOfSale>*>* StructsOfSales_list::_search_Sale(int value)
 	ptr = this->getHead();
 	while (ptr != NULL) {
 		if (ptr->getData().get_SalePtr()->getData().get_ID() == value)
+			resultList->push_back(ptr);
+		ptr = ptr->getNext();
+	}
+	return resultList;
+}
+
+List<Unit<StructOfSale>*>* StructsOfSales_list::_search_Guitar(int value) 
+{
+	List<Unit<StructOfSale>*>* resultList = new List<Unit<StructOfSale>*>;
+	Unit<StructOfSale>* ptr;
+
+	ptr = this->getHead();
+	while (ptr != NULL) {
+		if (ptr->getData().get_GuitarPtr()->getData().get_ID() == value)
 			resultList->push_back(ptr);
 		ptr = ptr->getNext();
 	}
@@ -307,6 +329,19 @@ List<Unit<Supply>*>* Supplies_list::_search_Employee(string value)
 	return resultList;
 }
 
+Unit<Supply>* Supplies_list::_search_Supply(int value) 
+{
+	Unit<Supply>* ptr;
+	ptr = this->getHead();
+
+	while (ptr != NULL) {
+		if (ptr->getData().get_ID() == value)
+			break;
+		ptr = ptr->getNext();
+	}
+	return ptr;
+}
+
 void Supplies_list::set_Pointers(List<Employee>* EmployeeBase)
 {
 	Unit<Supply>* ptr;
@@ -334,8 +369,6 @@ void Supplies_list::update_Pointers()
 void StructOfSupply::fillElement(fstream& fin)
 {
 	string temp;
-	//getline(fin, temp);
-	//this->set_ID(stoi(temp));
 	getline(fin, temp);
 	this->set_SupplyID(temp);
 	getline(fin, temp);
@@ -346,7 +379,6 @@ void StructOfSupply::fillElement(fstream& fin)
 
 void StructOfSupply::printElement(fstream& fout)
 {
-	//fout << this->get_ID() << "\n";
 	fout << this->get_SupplyID() << "\n";
 	fout << this->get_GuitarID() << "\n";
 	fout << this->get_Amount();
@@ -388,6 +420,20 @@ List<Unit<StructOfSupply>*>* StructsOfSupplies_list::_search_Supply(int value)
 	ptr = this->getHead();
 	while (ptr != NULL) {
 		if (ptr->getData().get_SupplyPtr()->getData().get_ID() == value)
+			resultList->push_back(ptr);
+		ptr = ptr->getNext();
+	}
+	return resultList;
+}
+
+List<Unit<StructOfSupply>*>* StructsOfSupplies_list::_search_Guitar(int value)
+{
+	List<Unit<StructOfSupply>*>* resultList = new List<Unit<StructOfSupply>*>;
+	Unit<StructOfSupply>* ptr;
+
+	ptr = this->getHead();
+	while (ptr != NULL) {
+		if (ptr->getData().get_GuitarPtr()->getData().get_ID() == value)
 			resultList->push_back(ptr);
 		ptr = ptr->getNext();
 	}
